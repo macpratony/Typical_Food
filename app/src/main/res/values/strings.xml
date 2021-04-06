@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Typical Food</string>
+
+    <!-- ETIQUETAS HINT -->
+
+    <string name="hint_nombre">Nombre</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_contrasena">Contraseña</string>
+    <string name="hint_confirmar_contrasena">Confirmar Contraseña</string>
+
+
+    <!-- NOMBRES DE BOTONES -->
+    <string name="boton_acceder">ACCEDER</string>
+    <string name="boton_registrar">REGISTRARSE</string>
+    <string name="boton_acceder_google">GOOGLE</string>
+    <string name="crear_cuenta">CREAR CUENTA</string>
+    <string name="boton_cancelar">CANCELAR</string>
+    <string name="boton_ya_tengo_cuenta">YA TENGO CUENTA</string>
+    <string name="boton_restablecer_contrasena">RESTABLECER CONTRASEÑA</string>
+    <string name="olvido_contrasena">¿Ha olvidado la contraseña?</string>
+
+    <!-- TITULOS PRINCIPALES -->
+    <string name="seleccion_provincia">SELECCIONE UNA PROVINCIA</string>
+    <string name="ingrese_correo">Ingrese su correo electrónico</string>
+    <string name="typical_food">Typical Food</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_platos">Platos Favoritos</string>
+    <string name="menu_administrador">Acceso Administrador</string>
+    <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+    <string name="title_click">Title click</string>
+    <string name="copyright">Marco Prado</string>
+
+
+</resources>

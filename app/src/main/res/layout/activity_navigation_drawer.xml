@@ -9,6 +9,15 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <FrameLayout
+        android:id="@+id/provincia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_provincias">
+
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/home_content"
         android:layout_width="match_parent"
@@ -29,6 +38,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/navigation_drawer_menu"
+        app:headerLayout="@layout/nav_header"
         app:itemBackground="@drawable/drawer_background_selector"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -1,36 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:background="@android:color/holo_blue_dark">
 
-    <TextView
-        android:id="@+id/header_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:drawablePadding="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/app_name"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
-        app:drawableStartCompat="@mipmap/ic_google"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="@color/color_secundario"
+        android:padding="8dp">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:text="@string/copyright"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-        app:layout_constraintEnd_toEndOf="@+id/header_title"
-        app:layout_constraintStart_toStartOf="@+id/header_title"
-        app:layout_constraintTop_toBottomOf="@+id/header_title" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_perfil_user"
+            app:civ_border_color="@color/color_primario"
+            app:civ_border_width="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.117" />
 
-<!-- Navigation Drawer -->
+        <TextView
+            android:id="@+id/nombreUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USUARIO"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="vertical"
+        android:background="@color/color_secundario">
+        <TextView
+            android:id="@+id/copyrigth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/copyright"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
+
+    <!-- Navigation Drawer cabecera de imagen y nombre de usuario -->

@@ -28,11 +28,12 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_provincia">Provincia</string>
     <string name="menu_platos">Platos Favoritos</string>
     <string name="menu_administrador">Acceso Administrador</string>
     <string name="menu_cerrar_sesion">Cerrar Sesión</string>
     <string name="title_click">Title click</string>
-    <string name="copyright">Marco Prado</string>
+    <string name="copyright">© Marco Prado - www.typicalfood.com</string>
 
 
 </resources>

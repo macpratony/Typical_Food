@@ -7,13 +7,22 @@
         android:id="@+id/group1"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_favorito"
-            android:icon="@drawable/ic_menu_favorito"
-            android:title="@string/menu_platos" />
+            android:id="@+id/nav_provincia"
+            android:icon="@drawable/ic_menu_provincia"
+            android:title="@string/menu_provincia" />
     </group>
 
     <group
         android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_favorito"
+            android:icon="@drawable/ic_menu_food_favorite"
+            android:title="@string/menu_platos" />
+    </group>
+
+    <group
+        android:id="@+id/group3"
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_admin"
@@ -22,7 +31,7 @@
     </group>
 
     <group
-        android:id="@+id/group3"
+        android:id="@+id/group4"
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_logout"

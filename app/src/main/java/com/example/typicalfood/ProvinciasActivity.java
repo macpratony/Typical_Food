@@ -22,12 +22,12 @@ public class ProvinciasActivity extends AppCompatActivity {
 
         //PASAR DEL ARCHIVO QUE CONTIENE EL LISTADO DE LAS PROVINCIAS A UN ARRAY
         String[] array_listado_provincias = getResources().getStringArray(R.array.provincias);
-        lista_provincias = new ArrayList<>(Arrays.asList(array_listado_provincias));
+        //lista_provincias = new ArrayList<>(Arrays.asList(array_listado_provincias));
 
-        lista_list = (ListView)findViewById(R.id.listadoProvincia);
+        //lista_list = (ListView)findViewById(R.id.listadoProvincia);
 
         //Llamamos al layout personalizado que hemos creado con anterioridad "list_item_provincias"
-        adapter = new ArrayAdapter<>(this,R.layout.list_item_provincias, lista_provincias);
-        lista_list.setAdapter(adapter);
+        //adapter = new ArrayAdapter<>(this,R.layout.list_item_provincias, lista_provincias);
+        //lista_list.setAdapter(adapter);
     }
 }

@@ -3,6 +3,7 @@
     package="com.example.typicalfood">
     <!-- DANDO PERMISO ACCESO A INTENET DE LA APP -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".NavigationDrawerActivity">
+        <activity android:name=".Main_Navigation_Drawer_Activity.NavigationDrawerActivity">
 
         </activity>
         <!-- con esta linea eliminamos el toolbar de nuestra aplicacion -->

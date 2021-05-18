@@ -18,6 +18,7 @@
     <string name="boton_ya_tengo_cuenta">YA TENGO CUENTA</string>
     <string name="boton_restablecer_contrasena">RESTABLECER CONTRASEÑA</string>
     <string name="olvido_contrasena">¿Ha olvidado la contraseña?</string>
+    <string name="boton_regresar">REGRESAR</string>
 
     <!-- TITULOS PRINCIPALES -->
     <string name="seleccion_provincia">SELECCIONE UNA PROVINCIA</string>

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -119,7 +120,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task1) {
                             if(task1.isSuccessful()){
                                 Toast.makeText(RegistrarseActivity.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(RegistrarseActivity.this,NavigationDrawerActivity.class);
+                                Intent i = new Intent(RegistrarseActivity.this, NavigationDrawerActivity.class);
                                 startActivity(i);
                                 finish();
                             }else{

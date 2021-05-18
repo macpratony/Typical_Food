@@ -1,7 +1,9 @@
-package com.example.typicalfood.Provincia;
+package com.example.typicalfood.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,18 +28,8 @@ public class ProvinciasFragment extends Fragment {
     private ListView lista_list;
     private ArrayAdapter<String> adapter;
     private FirebaseFirestore db;
-//
-//    private static final String TEXT = "text";
-//
-//    public static MenuFragment newInstance(String text) {
-//        MenuFragment frag = new MenuFragment();
-//
-//        Bundle args = new Bundle();
-//        args.putString(TEXT, text);
-//        frag.setArguments(args);
-//
-//        return frag;
-//    }
+    private Interfaz mInterfaz;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
@@ -57,12 +50,34 @@ public class ProvinciasFragment extends Fragment {
         lista_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String ciudad = lista_provincias.get(position); //Guarda el nombre de la provincia que se esta pulsando
+                Toast.makeText(getContext(),ciudad, Toast.LENGTH_SHORT).show();
+                mInterfaz.getAllUser(ciudad);
 
-                String array = lista_provincias.get(position); //Guarda el nombre de la provincia que se esta pulsando
-                Toast.makeText(getContext(),array, Toast.LENGTH_SHORT).show();
             }
         });
-
+        
         return v;
     }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+       /* storage =  FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference imagesRef = storageRef.child("Madrid");*/
+
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Interfaz) {
+            mInterfaz = (Interfaz)context;
+        } else {
+            throw new RuntimeException();
+        }
+
+    }
+
 }

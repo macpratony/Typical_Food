@@ -10,13 +10,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.typicalfood.Administrador.AdministradorFragment;
+import com.example.typicalfood.AutenticacionActivity;
 import com.example.typicalfood.Fragments.DetallePlatoFragment;
 import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.PlatosFavoritos.FavoritosFragment;
@@ -28,6 +31,7 @@ import com.example.typicalfood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,6 +46,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     private DrawerLayout drawerLayout;
     private FirebaseFirestore db;
     private AdapterPlatos adapterPlatos;
+    private FirebaseAuth mAuth;
 
     private RecyclerView mRecyclerView;
     private ArrayList<Platos> platosList;
@@ -65,6 +70,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         toggle.syncState();
 
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         // mRecyclerView.setLayoutManager(layoutManager);
@@ -78,6 +84,16 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
         drawerLayout.addDrawerListener(this);
 
+    }
+    @Override
+    public boolean likeAnimation(LottieAnimationView imageView, int animation, boolean like){
+        if (!like) {
+            imageView.setAnimation(animation);
+            imageView.playAnimation();
+        }else{
+            imageView.setImageResource(R.drawable.twitter_like);
+        }
+        return !like;
     }
 
     //Este metodo hace que si está el menu desplegado al darle a la tecla atras se oculte el menú
@@ -131,6 +147,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 break;
             case R.id.nav_logout:
                 title = R.string.menu_cerrar_sesion;
+                //Cierra sesión y regresa a la pagina de autenticacion
+                mAuth.signOut();
+                startActivity(new Intent(NavigationDrawerActivity.this, AutenticacionActivity.class));
+                finish();//Finaliza la tarea para que no pueda volver atras
+
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!!");
@@ -149,6 +170,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     private String titulo = "";
     private String foto = "";
     private String descripcion = "";
+
     @Override
     public AdapterPlatos getAllUser(String ciudad) {
         platosList = null;
@@ -175,6 +197,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                                     if (document.getId().equals(ciudad)) {
 
                                         fragmentTransaction.replace(R.id.home_content, platosFragment);
+                                        fragmentTransaction.addToBackStack(null); //Permite que al darle al boton de atras del movil regrese a la pagina anterior
                                         fragmentTransaction.commit();
 
                                         //Recoge los datos que hay en el arraylist de firebase para recorrerlo y extraer su valor
@@ -186,8 +209,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                                                 //Variables para recoger los datos al recorrer el map
                                                 String clave = entrada.getKey();
                                                 String valor = entrada.getValue();
-
-                                                Log.d(TAG, clave+" "+valor);
 
                                                 if(clave.equals("descripcion")){
                                                     descripcion = valor;
@@ -208,7 +229,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                                         // Toast.makeText(getContext(),  titulo, Toast.LENGTH_SHORT).show();
 
                                     } else {
-                                        Toast.makeText(NavigationDrawerActivity.this, "No es madrid", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(NavigationDrawerActivity.this, "La ciudad seleccionada no contiene ningun plato", Toast.LENGTH_SHORT).show();
                                     }
 
                                 } else {
@@ -237,7 +258,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
 
         fragmentTransaction.replace(R.id.home_content, detallePlatoFragment);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(null); //Permite que al darle al boton de atras del movil regrese a la pagina anterior
         fragmentTransaction.commit();
 
     }

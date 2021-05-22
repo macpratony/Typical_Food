@@ -16,4 +16,9 @@
     <color name="color_error">#E70000</color>
     <color name="color_fondo_listView">#8DC9C2</color>
     <color name="color_barra">#888787</color>
+
+    <color name="color_bandera1">#C70C1F</color>
+    <color name="color_bandera2">#FAE846</color>
+    <color name="color_listado_provincia">#00C4CC</color>
+    <color name="color_item_provincia">#DE1393</color>
 </resources>

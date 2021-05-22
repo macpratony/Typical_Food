@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.typicalfood.Entity.Platos;
 import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.Adapter.AdapterPlatos;
@@ -33,15 +34,16 @@ public class PlatosFragment extends Fragment {
      private FirebaseFirestore db;
 
      private RecyclerView recyclerView;
-      AdapterPlatos adapterPlatos;
+     private AdapterPlatos adapterPlatos;
      private Interfaz mInterfaz;
      private ArrayList<Platos> listaPlatos;
 
     private TextView title;
     private Button button;
     private String provincia="";
+    private Activity actividad;
+    private boolean like = false;
 
-    Activity actividad;
 
     public PlatosFragment() {
         // Required empty public constructor

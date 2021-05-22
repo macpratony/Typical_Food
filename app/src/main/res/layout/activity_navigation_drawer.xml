@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_provincias">
 
-
     </FrameLayout>
 
     <LinearLayout
@@ -35,6 +34,7 @@
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@color/color_fondo2"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/navigation_drawer_menu"

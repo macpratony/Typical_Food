@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.typicalfood.Entity.Platos;
 import com.example.typicalfood.Fragments.DetallePlatoFragment;
@@ -28,8 +29,10 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
     private Context context;
     private int layout;
     private ArrayList<Platos> platosList;
+    private CardView cardView;
 
     private View.OnClickListener listener;
+
 
     public AdapterPlatos( @NonNull Context context, int resource, @NonNull ArrayList<Platos> platosList){
         //super(context, resource, platosList);
@@ -60,13 +63,13 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
         Glide.with(context).load(photo).into(holder.imageViewFoto);//Transforma el enlace url en imagen
 
         holder.cardView.setOnClickListener(this);
-
     }
 
     @Override
     public int getItemCount() {
         return platosList.size();
     }
+
 
     @Override
     public void onClick(View v) {
@@ -82,6 +85,8 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
         ImageView imageViewFoto;
         CardView cardView;
 
+        boolean like = false;
+
         /*
          *Tomamos referencia de las id creada en item_platos_provincia.xml
          */
@@ -90,6 +95,7 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
             textViewTitulo = itemView.findViewById(R.id.titulo);
             imageViewFoto = itemView.findViewById(R.id.imagen_plato);
             cardView = itemView.findViewById(R.id.cardView);
+
         }
     }
 }

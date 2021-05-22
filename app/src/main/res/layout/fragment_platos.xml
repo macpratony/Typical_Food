@@ -4,14 +4,14 @@
     android:id="@+id/pro1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_fondo2"
+    android:background="@drawable/fondo_rojo"
     android:orientation="vertical"
     tools:context=".Fragments.PlatosFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="26dp"
         android:orientation="horizontal">
 
         <TextView
@@ -19,18 +19,21 @@
             android:layout_width="237dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonRegresar"
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@color/color_barra"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/btn_dos"
             android:drawableLeft="@drawable/ic_arrow_back"
-            android:text="@string/boton_regresar" />
+            android:text="@string/boton_regresar"
+            android:textColor="@drawable/txt_btn_uno" />
 
 
     </LinearLayout>
@@ -38,7 +41,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="100dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView

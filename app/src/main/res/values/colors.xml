@@ -21,4 +21,5 @@
     <color name="color_bandera2">#FAE846</color>
     <color name="color_listado_provincia">#00C4CC</color>
     <color name="color_item_provincia">#DE1393</color>
+    <color name="primary" >#9a28a1</color>
 </resources>

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:background="@color/primary"
     android:fitsSystemWindows="true"
-    android:background="@android:color/holo_blue_dark">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="@color/color_primario"
         android:orientation="horizontal"
-        android:background="@color/color_secundario"
         android:padding="8dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -20,7 +19,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/ic_perfil_user"
-            app:civ_border_color="@color/color_primario"
+            app:civ_border_color="@color/color_barra"
             app:civ_border_width="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,12 +32,11 @@
             android:id="@+id/nombreUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
             android:text="USUARIO"
             android:textColor="@color/white"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="20sp"/>
-
+            android:textSize="20sp" />
 
 
     </LinearLayout>
@@ -46,20 +44,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:orientation="vertical"
-        android:background="@color/color_secundario">
+        android:background="@color/color_primario"
+        android:orientation="vertical">
+
         <TextView
-            android:id="@+id/copyrigth"
+            android:id="@+id/correoUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:text="@string/copyright"
             android:textColor="@color/white"
-            android:layout_marginLeft="10dp"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

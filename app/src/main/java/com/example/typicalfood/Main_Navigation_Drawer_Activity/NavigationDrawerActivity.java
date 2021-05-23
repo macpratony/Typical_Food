@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -32,6 +33,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -54,6 +60,13 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     private DetallePlatoFragment detallePlatoFragment;
     private FragmentTransaction fragmentTransaction;
 
+    private DatabaseReference mDatabase;
+
+    private View header;
+
+    private TextView nameUsuario;
+    private TextView emailUsuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +84,19 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         // mRecyclerView.setLayoutManager(layoutManager);
 
         NavigationView navigationView = findViewById(R.id.navigation_view);
+
+        header = navigationView.getHeaderView(0);
+        nameUsuario = (TextView) header.findViewById(R.id.nombreUsuario);
+        emailUsuario = (TextView) header.findViewById(R.id.correoUsuario);
+
+
+
         navigationView.setNavigationItemSelectedListener(this);
 
         MenuItem menuItem = navigationView.getMenu().getItem(0);
@@ -83,8 +104,34 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         menuItem.setChecked(true);
 
         drawerLayout.addDrawerListener(this);
+        getUserInfo();
 
     }
+
+    public void getUserInfo(){
+        String id = mAuth.getCurrentUser().getUid();
+        mDatabase.child("Users").child(id).addValueEventListener(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String nombre = snapshot.child("name").getValue().toString();
+                    String correo = snapshot.child("email").getValue().toString();
+
+                    nameUsuario.setText(nombre);
+                    emailUsuario.setText(correo);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public boolean likeAnimation(LottieAnimationView imageView, int animation, boolean like){
         if (!like) {

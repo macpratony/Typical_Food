@@ -12,11 +12,15 @@ import android.widget.Toast;
 
 import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +29,7 @@ public class RegistrarseActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private FirebaseFirestore mFirestore;
 
     //VARIABLES DE LA PANTALLA DE REGISTRO
     private EditText ediTextNombre;
@@ -48,6 +53,7 @@ public class RegistrarseActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirestore = FirebaseFirestore.getInstance();
 
         ediTextNombre = (EditText) findViewById(R.id.nombre);
         ediTextEmail = (EditText) findViewById(R.id.email);
@@ -78,7 +84,8 @@ public class RegistrarseActivity extends AppCompatActivity {
                 }else if(!nombre.isEmpty() && !email.isEmpty() && !password.isEmpty()){
                     if(password.length() >= 6){
                         if(password.equals(confirmarContrasena)){
-                            registerUser();
+                            //registerUser();
+                            registerUserCloudFirestore();
                         }else {
                             Toast.makeText(RegistrarseActivity.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
                         }
@@ -112,6 +119,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                         map.put("name", nombre);
                         map.put("email", email);
                         map.put("password", password);
+                        map.put("favoritos", "");
 
                     String id = mAuth.getCurrentUser().getUid();
 
@@ -135,6 +143,57 @@ public class RegistrarseActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void registerUserCloudFirestore(){
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>(){
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", nombre);
+                    map.put("email", email);
+                    map.put("password", password);
+                    map.put("favorites", "");
+
+                    String id = mAuth.getCurrentUser().getUid();
+
+                    mFirestore.collection("Users").document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(RegistrarseActivity.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(RegistrarseActivity.this, NavigationDrawerActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener(){
+
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(RegistrarseActivity.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                   /* mFirestore.collection("User").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(RegistrarseActivity.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(RegistrarseActivity.this, NavigationDrawerActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener(){
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(RegistrarseActivity.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+
+                }else{
+                    Toast.makeText(RegistrarseActivity.this, "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

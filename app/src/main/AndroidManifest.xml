@@ -9,20 +9,19 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".Main_Navigation_Drawer_Activity.NavigationDrawerActivity">
-
-        </activity>
-        <!-- con esta linea eliminamos el toolbar de nuestra aplicacion -->
-        <activity android:name=".ScreenMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <!-- con esta linea eliminamos el toolbar de nuestra aplicacion -->
+        <activity android:name=".ScreenMainActivity">
+
         </activity>
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".RegistrarseActivity" />

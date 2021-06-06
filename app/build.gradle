@@ -57,9 +57,14 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.3'
 
     implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "androidx.datastore:datastore-preferences:1.0.0-beta01"
 
     //Libreria lottie para cargar animaciones
     implementation 'com.airbnb.android:lottie:3.4.2'
+
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0"
 
     //Libreria para cargar una imagen de firebase
     implementation 'com.github.bumptech.glide:glide:4.12.0'

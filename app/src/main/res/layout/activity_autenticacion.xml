@@ -22,9 +22,9 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:src="@drawable/modelo"
+                android:layout_width="157dp"
+                android:layout_height="160dp"
+                android:src="@drawable/logo_app"
                 app:civ_border_color="@color/color_primario"
                 app:civ_border_width="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"

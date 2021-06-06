@@ -4,37 +4,31 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.example.typicalfood.Entity.FavoritosPlatos;
 import com.example.typicalfood.Entity.Platos;
-import com.example.typicalfood.Fragments.DetallePlatoFragment;
-import com.example.typicalfood.Fragments.ProvinciasFragment;
 import com.example.typicalfood.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder> implements View.OnClickListener {
+public class AdapterFavorito extends RecyclerView.Adapter<AdapterFavorito.ViewHolder> implements View.OnClickListener {
 
     private Context context;
     private int layout;
-    private ArrayList<Platos> platosList;
+    private ArrayList<FavoritosPlatos> platosList;
     private CardView cardView;
 
     private View.OnClickListener listener;
 
 
-    public AdapterPlatos( @NonNull Context context, int resource, @NonNull ArrayList<Platos> platosList){
+    public AdapterFavorito(@NonNull Context context, int resource, @NonNull ArrayList<FavoritosPlatos> platosList){
         //super(context, resource, platosList);
         this.context = context;
         layout = resource;
@@ -44,20 +38,21 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public AdapterFavorito.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(layout, viewGroup, false);
-        return new ViewHolder(view);
+        return new AdapterFavorito.ViewHolder(view);
     }
+
 
     public void setOnclickListener(View.OnClickListener listener){
         this.listener = listener;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       String title = platosList.get(position).getTitulo();
-       String photo = platosList.get(position).getFoto();
-       String descripcion = platosList.get(position).getDescripcion();
+    public void onBindViewHolder(@NonNull AdapterFavorito.ViewHolder holder, int position) {
+        String title = platosList.get(position).getTitulo();
+        String photo = platosList.get(position).getFoto();
+        String descripcion = platosList.get(position).getDescripcion();
 
         holder.textViewTitulo.setText(title.toUpperCase());
         Glide.with(context).load(photo).into(holder.imageViewFoto);//Transforma el enlace url en imagen
@@ -81,12 +76,9 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitulo;
-        ImageView imageViewFoto;
-        CardView cardView;
-
-        boolean like = false;
-
+        private TextView textViewTitulo;
+        private ImageView imageViewFoto;
+        private CardView cardView;
         /*
          *Tomamos referencia de las id creada en item_platos_provincia.xml
          */

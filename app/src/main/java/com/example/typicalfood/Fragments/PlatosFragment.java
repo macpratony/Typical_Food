@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,28 +24,25 @@ import com.example.typicalfood.Entity.Platos;
 import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.Adapter.AdapterPlatos;
 import com.example.typicalfood.R;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 
 public class PlatosFragment extends Fragment {
-
-     private FirebaseStorage storage;
-     private FirebaseFirestore db;
 
      private RecyclerView recyclerView;
      private AdapterPlatos adapterPlatos;
      private Interfaz mInterfaz;
      private ArrayList<Platos> listaPlatos;
-
     private TextView title;
-    private Button button;
+    private ImageButton button;
     private String provincia="";
     private Activity actividad;
-    private boolean like = false;
-
 
     public PlatosFragment() {
         // Required empty public constructor
@@ -67,7 +66,6 @@ public class PlatosFragment extends Fragment {
         listaPlatos = new ArrayList<>();
 
         mostrarDatos();
-
         return v;
     }
 
@@ -85,11 +83,10 @@ public class PlatosFragment extends Fragment {
         recyclerView.setAdapter(adapterPlatos);
 
         adapterPlatos.setOnclickListener(view -> {
-
             //enviar mediante la interface el objeto seleccionado al detalle
             //se envia el objeto completo
             //se utiliza la interface como puente para enviar el objeto seleccionado
-            mInterfaz.enviarPlatos(listaPlatos.get(recyclerView.getChildAdapterPosition(view)));
+            mInterfaz.enviarPlatos(listaPlatos.get(recyclerView.getChildAdapterPosition(view)), provincia);
             //luego en el mainactivity se hace la implementacion de la interface para implementar el metodo enviarpersona
         });
 

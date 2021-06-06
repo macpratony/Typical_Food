@@ -52,7 +52,7 @@ public class ProvinciasFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String ciudad = lista_provincias.get(position); //Guarda el nombre de la provincia que se esta pulsando
                 Toast.makeText(getContext(),ciudad, Toast.LENGTH_SHORT).show();
-                mInterfaz.getAllUser(ciudad);
+                mInterfaz.getAllProvince(ciudad);
 
             }
         });

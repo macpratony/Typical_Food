@@ -46,7 +46,6 @@ public class PlatosFragment extends Fragment {
 
     public PlatosFragment() {
         // Required empty public constructor
-
     }
 
     @Nullable

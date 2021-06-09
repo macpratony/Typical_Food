@@ -6,9 +6,11 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +31,12 @@ import com.example.typicalfood.R;
 import com.example.typicalfood.ViewModel.ViewModelFavorites;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.util.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +51,16 @@ public class FavoritosFragment extends Fragment {
 
     private AdapterFavorito adapter;
     private RecyclerView recyclerView;
-    private List<FavoritosPlatos> platosList ;
-    private ArrayList<FavoritosPlatos> listPlate;
+    private List<FavoritosPlatos> platosList = new ArrayList<>();
+    private List<FavoritosPlatos> listPlate = new ArrayList<>();
     private Interfaz mInterfaz;
     private Activity actividad;
 
+    protected ViewModelFavorites viewModel;
+
     private String city;
     private int posicion;
+    private boolean isFavorite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,91 +72,46 @@ public class FavoritosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
-        ViewModelFavorites viewModel = new ViewModelProvider(requireActivity()).get(ViewModelFavorites.class);
-
+            recyclerView = view.findViewById(R.id.recicleFav);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             mAuth = FirebaseAuth.getInstance();
             mFirestore = FirebaseFirestore.getInstance();
-            listPlate = new ArrayList<>();
-            platosList = new ArrayList<>();
-            //viewModel.getFavPlatos().observe(getViewLifecycleOwner(), platos ->{
-            //    System.out.println(platos.size());
-            //});
+            if(mAuth.getCurrentUser() != null){
+                viewModel = new ViewModelProvider(this).get(ViewModelFavorites.class);
+            }
 
 
-
-                //existPlate();
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mAuth.getCurrentUser() != null){
+            viewModel.getFavPlatos().observe(getViewLifecycleOwner(), new Observer<List<FavoritosPlatos>>() {
+                @Override
+                public void onChanged(List<FavoritosPlatos> favoritosPlatosList) {
 
-/*
-    public void existPlate(){
+                    platosList = favoritosPlatosList;
+                    adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
+                    recyclerView.setAdapter(adapter);
 
-        mFirestore.collection("Users").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    UserPojo user = documentSnapshot.toObject(UserPojo.class);
-                    List<DocumentReference> ref = user.getFavorites();
+                    adapter.setOnclickListener(view -> {
 
-                    if(ref.size() > 0){
-                        for (int i= 0; i < ref.size(); i++){
-                            String r = ref.get(i).getPath();
-                            String[] prueba = r.split("/");
-                            for(int x=0; x<prueba.length; x++){
-                                city = prueba[1];
-                                posicion = Integer.parseInt(prueba[3]);
-                                //Provincias/Albacete/platos/0
-                                //El array prueba contiene el texto de arriba separado por / siendo provincia la posicion 0 , etc
-                                //Enviamos por parametro la provincia que corresponde a la posicion 1 y la posicion del plato que corresponde a la posicion 3 del array
-                                //Como es un string se trasforma a Integer
+                        mInterfaz.enviarPlatosFavoritos(platosList.get(recyclerView.getChildAdapterPosition(view)));
 
-                            }
-
-                            adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, listPlate);
-                            recyclerView.setAdapter(adapter);
-
-                        }
-                    }
-                }else{
-                    Toast.makeText(getContext(), "no existe favoritos", Toast.LENGTH_SHORT).show();
+                    });
                 }
+            });
 
-            }
-        });
-
+        }else{
+            adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
+            recyclerView.setAdapter(adapter);
+        }
 
     }
-
-    public List<FavoritosPlatos> getPlateFavorite(){
-
-        mFirestore.collection("Provincias").document(city).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    ArrayList lista = (ArrayList) documentSnapshot.getData().get("platos");
-
-                        Map<String, String> map = (Map<String,String>) lista.get(posicion);
-                        String title =  map.get("titulo");
-                        String description = map.get("descripcion");
-                        String photo = map.get("foto");
-                        platosList.add(new FavoritosPlatos(title,description,photo));
-
-                }else{
-                    System.out.println("No existe nada en el documento");
-                }
-            }
-        });
-
-        return platosList;
-    }
-*/
-
-
-
 
     @Override
     public void onAttach(@NonNull Context context) {

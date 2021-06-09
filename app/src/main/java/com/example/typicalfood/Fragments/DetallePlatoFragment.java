@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,27 +21,23 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.typicalfood.Adapter.AdapterFavorito;
+import com.example.typicalfood.Entity.FavoritosPlatos;
 import com.example.typicalfood.Entity.Platos;
 import com.example.typicalfood.Interface.Interfaz;
-import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.example.typicalfood.Pojo.UserPojo;
 import com.example.typicalfood.R;
 import com.example.typicalfood.ScreenMainActivity;
 
 import com.example.typicalfood.ViewModel.ViewModelFavorites;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,16 +56,19 @@ public class DetallePlatoFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     private Platos platos = null;
+    private FavoritosPlatos plate = null;
     private String provincia;
     private AdapterFavorito adapterFavorito;
     private RecyclerView recyclerView;
+    private ViewModelFavorites viewModel;
+    private String tit;
 
     private Interfaz mInterfaz;
     private Activity actividad;
     private ArrayList<DocumentReference> ref = new ArrayList<DocumentReference>();
 
 
-    private boolean isFavorite;
+    private boolean isFavorite = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,47 +77,55 @@ public class DetallePlatoFragment extends Fragment {
         titulo = view.findViewById(R.id.tituloDetalle);
         imagen = view.findViewById(R.id.imagenDetalle);
         descripcion = view.findViewById(R.id.descripcionDetalle);
-        lottieAnimationView = view.findViewById(R.id.likeImageView);
-
+        lottieAnimationView = view.findViewById(R.id.plusImageView);
 
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
         Bundle objetoPlato = getArguments();
         if(objetoPlato != null){
-            platos = (Platos) objetoPlato.getSerializable("objeto");
             provincia = (String) objetoPlato.getSerializable("provincia");
-            titulo.setText(platos.getTitulo().toUpperCase());
-            Glide.with(getContext()).load(platos.getFoto()).into(imagen);
-            descripcion.setText(platos.getDescripcion());
-
-        }
-        getPositionNamePlate();
-        System.out.println(isFavorite+" *****************222222222222");
-        if(isFavorite){
-            lottieAnimationView.setImageResource(R.drawable.twitter_like2);
+            if(provincia != null){
+                platos = (Platos) objetoPlato.getSerializable("objeto");
+                titulo.setText(platos.getTitulo().toUpperCase());
+                Glide.with(getContext()).load(platos.getFoto()).into(imagen);
+                descripcion.setText(platos.getDescripcion());
+                tit = platos.getTitulo();
+            }else{
+                plate = (FavoritosPlatos) objetoPlato.getSerializable("objeto");
+                titulo.setText(plate.getTitulo().toUpperCase());
+                Glide.with(getContext()).load(plate.getFoto()).into(imagen);
+                descripcion.setText(plate.getDescripcion());
+                provincia = plate.getProvincia();
+                tit = plate.getTitulo();
+            }
         }
 
         lottieAnimationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isFavorite =  likeAnimation(lottieAnimationView, R.raw.black_joy, isFavorite);
-                System.out.println(isFavorite+" *****************");
             }
         });
 
         return view;
     }
 
-    private boolean likeAnimation(LottieAnimationView imageView, int animation, boolean like){
 
-        String titulo = platos.getTitulo();
-        String foto = platos.getFoto();
-        String descripcion = platos.getDescripcion();
+    private boolean likeAnimation(LottieAnimationView imageView, int animation, boolean like){
+        if(platos != null){
+            String titulo = platos.getTitulo();
+            String foto = platos.getFoto();
+            String descripcion = platos.getDescripcion();
+        }else{
+            String titulo = plate.getTitulo();
+            String foto = plate.getFoto();
+            String descripcion = plate.getDescripcion();
+        }
+
 
 
         if(mAuth.getCurrentUser() != null){
-            //documentRef = mFirestore.collection("Provincias").document(provincia); //Obtiene la referencia del plato al que le da like
             documentRef = getPositionNamePlate();
 
             if(documentRef != null) {
@@ -159,6 +164,7 @@ public class DetallePlatoFragment extends Fragment {
     }
 
     public DocumentReference getPositionNamePlate(){
+
         mFirestore.collection("Provincias").document(provincia).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -168,11 +174,21 @@ public class DetallePlatoFragment extends Fragment {
 
                         Map<String, String> map = (Map<String,String>) lista.get(i);
                         for (Map.Entry<String, String> listPlatos : map.entrySet()) {
-                            if(platos.getTitulo().toLowerCase().equals(listPlatos.getValue().toLowerCase())){
-                                documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
-                                String path = "Provincias/"+provincia+"/platos/"+i;
-                                isFavorite = existPlate(path);
+
+                            if(platos != null){
+                                if(platos.getTitulo().toLowerCase().equals(listPlatos.getValue().toLowerCase())){
+                                    documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
+                                    String path = "Provincias/"+provincia+"/platos/"+i;
+                                    existPlate(path);
+                                }
+                            }else{
+                                if(plate.getTitulo().toLowerCase().equals(listPlatos.getValue().toLowerCase())){
+                                    documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
+                                    String path = "Provincias/"+provincia+"/platos/"+i;
+                                    existPlate(path);
+                                }
                             }
+
 
                         }
                     }

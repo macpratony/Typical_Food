@@ -27,6 +27,9 @@ public interface Interfaz {
     public Task<Void> addReference(DocumentReference mReference);
     public Task<Void> removeReference(DocumentReference mReference);
 
+    public void accesAdministrator(String nombre, String correo);
+    public void agregarPlatos();
+
 
 
     }

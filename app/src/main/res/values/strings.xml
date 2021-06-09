@@ -7,6 +7,9 @@
     <string name="hint_email">Email</string>
     <string name="hint_contrasena">Contraseña</string>
     <string name="hint_confirmar_contrasena">Confirmar Contraseña</string>
+    <string name="hint_provincia">Ingrese Nombre de la Provincia</string>
+    <string name="hint_nombre_plato">Ingrese Nombre del Plato</string>
+
 
 
     <!-- NOMBRES DE BOTONES -->
@@ -19,6 +22,8 @@
     <string name="boton_restablecer_contrasena">RESTABLECER CONTRASEÑA</string>
     <string name="olvido_contrasena">¿Ha olvidado la contraseña?</string>
     <string name="boton_regresar">REGRESAR</string>
+    <string name="boton_subir_plato">SUBIR PLATO</string>
+
 
     <!-- TITULOS PRINCIPALES -->
     <string name="seleccion_provincia">SELECCIONE UNA PROVINCIA</string>

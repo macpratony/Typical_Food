@@ -11,14 +11,16 @@ public class FavoritosPlatos implements Serializable{
     private String titulo;
     private String foto;
     private String descripcion;
+    private String provincia;
 
     public FavoritosPlatos() {
     }
 
-    public FavoritosPlatos(String titulo, String foto, String descripcion) {
+    public FavoritosPlatos(String titulo, String foto, String descripcion, String provincia) {
         this.titulo = titulo;
         this.foto = foto;
         this.descripcion = descripcion;
+        this.provincia = provincia;
     }
 
     public String getTitulo() {
@@ -45,4 +47,11 @@ public class FavoritosPlatos implements Serializable{
         this.descripcion = descripcion;
     }
 
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
 }

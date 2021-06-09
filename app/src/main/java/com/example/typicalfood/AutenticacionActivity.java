@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.typicalfood.Administrador.AdministradorFragment;
 import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.SignInButton;
@@ -85,52 +86,26 @@ public class AutenticacionActivity extends AppCompatActivity {
 
     //METODO QUE VERIFICA EL ACCESO MEDIANTE USUARIO Y CONTRASEÑA
     public void loginUser(){
+        if(email.equals("marcoaph29@gmail.com") && password.equals("Administrador")){
+            Intent i = new Intent(getApplicationContext(), AdministradorFragment.class);
+            startActivity(i);
+        }else {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                               // FirebaseUser user = mAuth.getCurrentUser();
+                                // FirebaseUser user = mAuth.getCurrentUser();
                                 Intent i = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
                                 startActivity(i);
                                 finish();
                             } else {
-                               // Toast.makeText(getApplicationContext(), "Correo o contraseña incorrecto", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(getApplicationContext(), "Correo o contraseña incorrecto", Toast.LENGTH_SHORT).show();
                                 mTextViewRespuesta.setText("Correo o contraseña incorrecto");
                             }
                         }
                     });
+        }
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        //PREGUNTAMOS SI EL USUARIO YA SE HA REGISTRADO SI ES ASI AL ABRIR LA APP LO LLEVA A ELEGIR UNA PROVINCIA
-//        if(mAuth.getCurrentUser() != null){
-//            startActivity(new Intent(AutenticacionActivity.this, ProvinciasActivity.class));
-//            finish();
-//        }
-//    }
-
-    /*metodo que permite recuperar informacion de la base de datos
-     private DatabaseReference mDatabase;
-     mDatabase = FirebaseDatabase.getInstance().getReference();
-
-    private void getInfoUser(){
-        String id = mAuth.getCurrentUser().getUid();
-        mDatabase.child("Users").child(id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    String name = snapshot.child("name").getValue().toString();
-                    String email = snapshot.child("email").getValue().toString();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }*/
 }

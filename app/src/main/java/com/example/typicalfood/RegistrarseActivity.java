@@ -22,7 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegistrarseActivity extends AppCompatActivity {
@@ -44,6 +46,8 @@ public class RegistrarseActivity extends AppCompatActivity {
     private String email = "";
     private String password = "";
     private String confirmarContrasena = "";
+
+    private List<DocumentReference> listReference = new ArrayList<>();
 
 
     @Override
@@ -119,7 +123,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                         map.put("name", nombre);
                         map.put("email", email);
                         map.put("password", password);
-                        map.put("favoritos", "");
+                        map.put("favoritos", listReference);
 
                     String id = mAuth.getCurrentUser().getUid();
 
@@ -154,7 +158,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                     map.put("name", nombre);
                     map.put("email", email);
                     map.put("password", password);
-                    map.put("favorites", "");
+                    map.put("favorites", listReference);
 
                     String id = mAuth.getCurrentUser().getUid();
 
@@ -173,21 +177,6 @@ public class RegistrarseActivity extends AppCompatActivity {
                             Toast.makeText(RegistrarseActivity.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-                   /* mFirestore.collection("User").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(RegistrarseActivity.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(RegistrarseActivity.this, NavigationDrawerActivity.class);
-                            startActivity(i);
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener(){
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegistrarseActivity.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
-                        }
-                    });*/
 
                 }else{
                     Toast.makeText(RegistrarseActivity.this, "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();

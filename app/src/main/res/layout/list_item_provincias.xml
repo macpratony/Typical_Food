@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_listado_provincia"
+    android:background="@drawable/selector_item"
     android:textSize="24sp"
-    android:padding="10sp"
-    android:textColor="@color/white"
+    android:padding="20sp"
+    android:textColor="@color/color_bandera2"
     xmlns:android="http://schemas.android.com/apk/res/android" />
 
 <!-- Layout personalizado para poder modificar el color el tamaño y la separacion de los item-->

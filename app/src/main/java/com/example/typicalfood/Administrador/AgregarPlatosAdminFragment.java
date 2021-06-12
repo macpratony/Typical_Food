@@ -1,6 +1,5 @@
 package com.example.typicalfood.Administrador;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,8 +7,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +20,26 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
+import com.example.typicalfood.Entity.FavoritosPlatos;
 import com.example.typicalfood.R;
 
-import com.example.typicalfood.RegistrarseActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.typicalfood.ViewModel.ViewModelFavorites;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class AgregarPlatosAdminFragment extends Fragment {
@@ -48,6 +55,13 @@ public class AgregarPlatosAdminFragment extends Fragment {
     private Button enviarPlato;
     private Button cancelarPlato;
 
+    private ViewModelFavorites viewModel;
+    private List<DocumentSnapshot> listDocument;
+
+    private String nombreProvincia;
+    private String nombrePlato;
+    private String descrip;
+
     private Uri keyImage;
     private static final int GALLERY_INTENT = 1;
 
@@ -62,10 +76,6 @@ public class AgregarPlatosAdminFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_agregar_platos_admin, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFirestore = FirebaseFirestore.getInstance();
-        mStorage = FirebaseStorage.getInstance().getReference();
-
         provincia = view.findViewById(R.id.nombreProvincia);
         namePlato = view.findViewById(R.id.nombrePlato);
         descripcion = view.findViewById(R.id.descripcionPlato);
@@ -73,13 +83,24 @@ public class AgregarPlatosAdminFragment extends Fragment {
         enviarPlato = view.findViewById(R.id.btnSubirPlato);
         cancelarPlato = view.findViewById(R.id.btncancelarPlato);
 
-        cancelarPlato.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        initialize();
+        savePlateFirebase();
+        cancelSavePlateFirebase();
+        loadPhoto();
 
-            }
-        });
+        return view;
+    }
 
+    public void initialize(){
+        mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
+        mStorage = FirebaseStorage.getInstance().getReference();
+        viewModel = new ViewModelProvider(this).get(ViewModelFavorites.class);
+
+    }
+
+    //Pulsar en la imagen para cargar desde el dispositivo
+    public void loadPhoto(){
         imageViewPlato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,55 +109,91 @@ public class AgregarPlatosAdminFragment extends Fragment {
                 startActivityForResult(intent, GALLERY_INTENT);
             }
         });
-        return view;
     }
 
+    //Boton guardar plato en Firebase
+    public void savePlateFirebase(){
+        enviarPlato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nombreProvincia = provincia.getText().toString();
+                nombrePlato = namePlato.getText().toString();
+                descrip = descripcion.getText().toString();
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("titulo", nombrePlato.toLowerCase());
+                map.put("descripcion", descrip);
+                map.put("foto", String.valueOf(keyImage));
+
+                if(nombreProvincia.equals("") || nombrePlato.equals("") || descrip.equals("") || keyImage == null){
+                    Snackbar.make(getView(), "Todos los campos son obligatorios para enviar un plato a la base de datos...", Snackbar.LENGTH_LONG).show();
+                }else{
+                    viewModel.getDocumentList().observe(getViewLifecycleOwner(), new Observer<List<DocumentSnapshot>>() {
+                        @Override
+                        public void onChanged(List<DocumentSnapshot> documentSnapshots) {
+                            listDocument = documentSnapshots;
+                            List<String> listaProvincia = new ArrayList<>();
+
+                            for(int i = 0; i<listDocument.size(); i++){
+                                String pro = listDocument.get(i).getId();
+                                listaProvincia.add(pro);
+                            }
+
+                            if(listaProvincia.contains(nombreProvincia)){
+                                savePlato( map);
+                                Snackbar.make(getView(), "Plato añadido con éxito", Snackbar.LENGTH_LONG).show();
+                            }else{
+                                Snackbar.make(getView(), "No existe o no coincide el nombre de la provincia con la de la base de datos", Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    //Guarda en la base de datos una vez que se está seguro que existe en la base de datos
+    public void savePlato(Map<String, Object> map){
+        DocumentReference mReference = mFirestore.collection("Provincias").document(nombreProvincia);
+        mReference.update("platos", FieldValue.arrayUnion(map));
+    }
+
+    //Boton cancelar subida de plato a firebase
+    public void cancelSavePlateFirebase(){
+        cancelarPlato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    //Metodo que se encarga de cargar la imagen desde el dispositivo subirlo a firebase y lyego retornar la uri de la foto
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        String nombreProvincia = provincia.getText().toString();
-        String nombrePlato = namePlato.getText().toString();
-        String descrip = descripcion.getText().toString();
 
         if(requestCode == GALLERY_INTENT){
                 Uri uri = data.getData();
                 StorageReference filePath = mStorage.child("Fotos");
                 final StorageReference fileName = filePath.child("file"+uri.getLastPathSegment());
 
-
                 fileName.putFile(uri).addOnSuccessListener(taskSnapshot -> fileName.getDownloadUrl().addOnSuccessListener(uri1 -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("titulo", nombrePlato.toLowerCase());
-                    map.put("descripcion", descrip);
-                    map.put("foto", String.valueOf(uri1));
+
                     Uri descargarFoto = uri1;
                     keyImage = uri1;
-                    
-                    //Hay que obtener la ultima posicion del array y añadir el plato
 
+                    //Muestra la foto cargada en firebase
                     Glide.with(getContext())
                             .load(descargarFoto)
                             .fitCenter()
                             .centerCrop()
                             .into(imageViewPlato);
-
-
-                    mFirestore.collection("Provincias").document(nombreProvincia).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getContext(), "Plato creado correctamente", Toast.LENGTH_SHORT).show();
-
-
-                        }
-                    });
-
                 }));
 
         }else{
-            Toast.makeText(getContext(), "No se subio la foto ", Toast.LENGTH_SHORT).show();
+            Snackbar.make(getView(), "Error al cargar la foto...", Snackbar.LENGTH_LONG).show();
         }
-
-
     }
+
 }

@@ -12,14 +12,17 @@ import com.example.typicalfood.Entity.FavoritosPlatos;
 import com.example.typicalfood.Pojo.UserPojo;
 ;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ViewModelFavorites extends ViewModel {
@@ -32,15 +35,18 @@ public class ViewModelFavorites extends ViewModel {
     boolean exist = false;
 
     private MutableLiveData<List<FavoritosPlatos>> favPlatos;
-    private MutableLiveData<Boolean> favorites;
+    private MutableLiveData<List<DocumentSnapshot>> documentList;
 
-    public MutableLiveData<Boolean> getFavorites() {
-        return favorites;
+    public MutableLiveData<List<DocumentSnapshot>> getDocumentList() {
+        return documentList;
     }
 
     public ViewModelFavorites(){
         favPlatos = new MutableLiveData<>();
-            existPlate(null);
+        documentList = new MutableLiveData<>();
+
+            existPlate();
+            searchDish();
     }
 
     public LiveData<List<FavoritosPlatos>> getFavPlatos() {
@@ -48,7 +54,7 @@ public class ViewModelFavorites extends ViewModel {
         return favPlatos;
     }
 
-    public boolean existPlate(String titulo){
+    public void existPlate(){
         mFirestore.collection("Users").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -67,7 +73,7 @@ public class ViewModelFavorites extends ViewModel {
                                 //El array prueba contiene el texto de arriba separado por / siendo provincia la posicion 0 , etc
                                 //Enviamos por parametro la provincia que corresponde a la posicion 1 y la posicion del plato que corresponde a la posicion 3 del array
                                 //Como es un string se trasforma a Integer
-                            exist= getPlateFavorite(city, posicion, titulo);
+                               getPlateFavorite(city, posicion);
                         }
 
                     }
@@ -78,11 +84,9 @@ public class ViewModelFavorites extends ViewModel {
             }
 
         });
-        return exist;
-
     }
 
-    public boolean getPlateFavorite(String city, int posicion, String titulo){
+    public void getPlateFavorite(String city, int posicion){
 
         mFirestore.collection("Provincias").document(city).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -94,11 +98,6 @@ public class ViewModelFavorites extends ViewModel {
                     String title =  map.get("titulo");
                     String description = map.get("descripcion");
                     String photo = map.get("foto");
-                    if(titulo != null){
-                        if(titulo.equals(title)){
-                            exist = true;
-                        }
-                    }
 
                     platosList.add(new FavoritosPlatos(title,photo,description,city));
                     favPlatos.setValue(platosList);
@@ -107,10 +106,17 @@ public class ViewModelFavorites extends ViewModel {
                 }
             }
         });
-        return exist;
+
     }
-    public void sigOut(){
-        favPlatos.setValue(null);
+
+    //Metodo que comprueba si existe la provincia a la que quiere añadir platos
+    public void searchDish(){
+        Task<QuerySnapshot> future = mFirestore.collection("Provincias").get();
+        future.addOnSuccessListener(t->{
+            documentList.setValue(t.getDocuments());
+            //List<DocumentSnapshot> list = t.getDocuments();
+        });
+
     }
 
 }

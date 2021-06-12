@@ -36,6 +36,12 @@
         <ListView
             android:id="@+id/listadoProvincia"
             android:layout_width="match_parent"
+            android:scrollbarStyle="insideOverlay"
+            android:dividerHeight="12dp"
+            android:paddingBottom="7dp"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:cacheColorHint="@color/black"
             android:layout_height="match_parent" />
 
     </LinearLayout>

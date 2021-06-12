@@ -9,8 +9,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -62,6 +66,7 @@ public class DetallePlatoFragment extends Fragment {
     private RecyclerView recyclerView;
     private ViewModelFavorites viewModel;
     private String tit;
+    private List<FavoritosPlatos> platosList = new ArrayList<>();
 
     private Interfaz mInterfaz;
     private Activity actividad;
@@ -101,6 +106,10 @@ public class DetallePlatoFragment extends Fragment {
             }
         }
 
+        if(mAuth.getCurrentUser() != null){
+            viewModel = new ViewModelProvider(this).get(ViewModelFavorites.class);
+        }
+
         lottieAnimationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +122,7 @@ public class DetallePlatoFragment extends Fragment {
 
 
     private boolean likeAnimation(LottieAnimationView imageView, int animation, boolean like){
-        if(platos != null){
+       /* if(platos != null){
             String titulo = platos.getTitulo();
             String foto = platos.getFoto();
             String descripcion = platos.getDescripcion();
@@ -121,24 +130,11 @@ public class DetallePlatoFragment extends Fragment {
             String titulo = plate.getTitulo();
             String foto = plate.getFoto();
             String descripcion = plate.getDescripcion();
-        }
-
-
+        }*/
 
         if(mAuth.getCurrentUser() != null){
-            documentRef = getPositionNamePlate();
+            getPositionNamePlate(imageView, animation,like);
 
-            if(documentRef != null) {
-                if(!like){
-                    mInterfaz.addReference(documentRef); //Envia la referencia a traves de la interfaz
-                    imageView.setAnimation(animation);
-                    imageView.playAnimation();
-
-                }else {
-                    mInterfaz.removeReference(documentRef);
-                    imageView.setImageResource(R.drawable.twitter_like);
-                }
-            }
         }else{
             //Si no existe usuario registrado sale una ventana de alerta
             AlertDialog.Builder alerta = new AlertDialog.Builder(getActivity());
@@ -163,46 +159,92 @@ public class DetallePlatoFragment extends Fragment {
         return !like;
     }
 
-    public DocumentReference getPositionNamePlate(){
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(mAuth.getCurrentUser() != null){
+            viewModel.getFavPlatos().observe(getViewLifecycleOwner(), new Observer<List<FavoritosPlatos>>() {
+                @Override
+                public void onChanged(List<FavoritosPlatos> favoritosPlatosList) {
+
+                    platosList = favoritosPlatosList;
+
+                    for(int i=0; i<platosList.size(); i++){
+                        if(platosList.get(i).getTitulo().toLowerCase().equals(tit.toLowerCase())){
+                            isFavorite = true;
+                            break;
+                        }
+                    }
+
+                    favoritePlate();
+                }
+            });
+
+        }else{
+
+        }
+    }
+
+    public void favoritePlate(){
+        if(isFavorite){
+
+            lottieAnimationView.setImageResource(R.drawable.twitter_like2);
+        }else{
+            lottieAnimationView.setImageResource(R.drawable.twitter_like);
+        }
+    }
+
+    public void getPositionNamePlate(LottieAnimationView imageView, int animation, boolean like){
 
         mFirestore.collection("Provincias").document(provincia).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     ArrayList lista = (ArrayList) documentSnapshot.getData().get("platos");
-                    for(int i=0; i< lista.size(); i++){
-
-                        Map<String, String> map = (Map<String,String>) lista.get(i);
+                    List<String> titulos = new ArrayList<>();
+                    for(int i=0; i< lista.size(); i++) {
+                        Map<String, String> map = (Map<String, String>) lista.get(i);
                         for (Map.Entry<String, String> listPlatos : map.entrySet()) {
+                            String clave = listPlatos.getKey();
+                            String valor = listPlatos.getValue();
 
-                            if(platos != null){
-                                if(platos.getTitulo().toLowerCase().equals(listPlatos.getValue().toLowerCase())){
-                                    documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
-                                    String path = "Provincias/"+provincia+"/platos/"+i;
-                                    existPlate(path);
-                                }
-                            }else{
-                                if(plate.getTitulo().toLowerCase().equals(listPlatos.getValue().toLowerCase())){
-                                    documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
-                                    String path = "Provincias/"+provincia+"/platos/"+i;
-                                    existPlate(path);
-                                }
+                            if (clave.equals("titulo")) {
+                                titulos.add(valor.toLowerCase());
                             }
+                        }
 
+                        if((platos != null && titulos.contains(platos.getTitulo().toLowerCase())) || (plate != null && titulos.contains(plate.getTitulo().toLowerCase()))){
+                            documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
 
+                            if(!like){
+                                mFirestore.collection("Users")
+                                        .document(mAuth.getCurrentUser().getUid())
+                                        .update("favorites", FieldValue.arrayUnion(documentRef2));
+                                imageView.setAnimation(animation);
+                                imageView.playAnimation();
+
+                            }else {
+                                mFirestore.collection("Users")
+                                        .document(mAuth.getCurrentUser().getUid())
+                                        .update("favorites", FieldValue.arrayRemove(documentRef2));
+                                imageView.setImageResource(R.drawable.twitter_like);
+                            }
+                            break;
                         }
                     }
+
                 }else{
                     System.out.println("No existe nada en el documento");
                 }
             }
         });
-        return documentRef2;
+
     }
 
 
 
-    public boolean existPlate(String docRef){
+    /*public boolean existPlate(String docRef){
 
         mFirestore.collection("Users").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -228,7 +270,7 @@ public class DetallePlatoFragment extends Fragment {
         });
 
         return isFavorite;
-    }
+    }*/
 
 
 

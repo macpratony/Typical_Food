@@ -2,6 +2,8 @@ package com.example.typicalfood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.typicalfood.Administrador.AdministradorFragment;
+import com.example.typicalfood.Administrador.AgregarPlatosAdminFragment;
+import com.example.typicalfood.Fragments.ProvinciasFragment;
 import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.SignInButton;
@@ -21,11 +25,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class AutenticacionActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleApi googleApi;
     private SignInButton signInButton;
+
+    private FragmentTransaction fragmentTransaction;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -67,6 +76,7 @@ public class AutenticacionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 email = editTextEmail.getText().toString().trim();
                 password = editTextContrasena.getText().toString().trim();
 
@@ -87,8 +97,24 @@ public class AutenticacionActivity extends AppCompatActivity {
     //METODO QUE VERIFICA EL ACCESO MEDIANTE USUARIO Y CONTRASEÑA
     public void loginUser(){
         if(email.equals("marcoaph29@gmail.com") && password.equals("Administrador")){
-            Intent i = new Intent(getApplicationContext(), AdministradorFragment.class);
-            startActivity(i);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // FirebaseUser user = mAuth.getCurrentUser();
+                                //FragmentManager fragmentManager = getSupportFragmentManager();
+                                //fragmentManager.beginTransaction().replace(R.id.home_content, new AdministradorFragment()).addToBackStack(null).commit();
+                                Intent i = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                // Toast.makeText(getApplicationContext(), "Correo o contraseña incorrecto", Toast.LENGTH_SHORT).show();
+                                mTextViewRespuesta.setText("Correo o contraseña incorrecto");
+                            }
+                        }
+                    });
+
         }else {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

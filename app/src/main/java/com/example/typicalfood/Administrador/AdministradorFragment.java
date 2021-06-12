@@ -55,6 +55,8 @@ public class AdministradorFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
 
+        getDataUser();
+
         lottieAnimationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

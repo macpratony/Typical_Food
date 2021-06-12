@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegistrarseActivity extends AppCompatActivity {
 
@@ -47,6 +49,9 @@ public class RegistrarseActivity extends AppCompatActivity {
     private String password = "";
     private String confirmarContrasena = "";
 
+    private Pattern pattern;
+    private Matcher mather;
+
     private List<DocumentReference> listReference = new ArrayList<>();
 
 
@@ -55,17 +60,33 @@ public class RegistrarseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrarse);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mFirestore = FirebaseFirestore.getInstance();
-
         ediTextNombre = (EditText) findViewById(R.id.nombre);
         ediTextEmail = (EditText) findViewById(R.id.email);
         ediTextContrasena = (EditText) findViewById(R.id.contrasena);
         ediTextConfirmarContrasena = (EditText) findViewById(R.id.confirmarContrasena);
 
         btnCrearCuenta = (Button) findViewById(R.id.btnCrearCuenta);
+        btnAtras = (Button)findViewById(R.id.btnCancelar);
 
+        initialize();
+        btnCreateAccount();
+        btnReturn();
+
+    }
+
+    //Inicializar variables
+    public void initialize(){
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirestore = FirebaseFirestore.getInstance();
+
+        // Patrón para validar el email
+       pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+    }
+
+    public void btnCreateAccount(){
         btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +94,6 @@ public class RegistrarseActivity extends AppCompatActivity {
                 email = ediTextEmail.getText().toString().trim();
                 password = ediTextContrasena.getText().toString();
                 confirmarContrasena = ediTextConfirmarContrasena.getText().toString();
-
 
                 if(nombre.isEmpty() && email.isEmpty() && password.isEmpty()){
                     Toast.makeText(RegistrarseActivity.this, "Debe completar los campos", Toast.LENGTH_SHORT).show();
@@ -88,8 +108,12 @@ public class RegistrarseActivity extends AppCompatActivity {
                 }else if(!nombre.isEmpty() && !email.isEmpty() && !password.isEmpty()){
                     if(password.length() >= 6){
                         if(password.equals(confirmarContrasena)){
-                            //registerUser();
-                            registerUserCloudFirestore();
+                            mather = pattern.matcher(email);
+                            if (mather.find() == true) {
+                                registerUserCloudFirestore();
+                            } else {
+                                Toast.makeText(RegistrarseActivity.this, "El email introducido no es válido", Toast.LENGTH_SHORT).show();
+                            }
                         }else {
                             Toast.makeText(RegistrarseActivity.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
                         }
@@ -100,9 +124,10 @@ public class RegistrarseActivity extends AppCompatActivity {
             }
         });
 
-        btnAtras = (Button)findViewById(R.id.btnCancelar);
+    }
 
-        //METODO DE CANCELAR REGRESAR A LA PANTALLA ANTERIOR
+    //METODO DE CANCELAR REGRESAR A LA PANTALLA ANTERIOR
+    public void btnReturn(){
         btnAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,45 +135,9 @@ public class RegistrarseActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
 
     //METODO DE CREAR NUEVO USUARIO
-    public void registerUser(){
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> map = new HashMap<>();
-                        map.put("name", nombre);
-                        map.put("email", email);
-                        map.put("password", password);
-                        map.put("favoritos", listReference);
-
-                    String id = mAuth.getCurrentUser().getUid();
-
-                    mDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task1) {
-                            if(task1.isSuccessful()){
-                                Toast.makeText(RegistrarseActivity.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(RegistrarseActivity.this, NavigationDrawerActivity.class);
-                                startActivity(i);
-                                finish();
-                            }else{
-                                Toast.makeText(RegistrarseActivity.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                }else{
-                    Toast.makeText(RegistrarseActivity.this, "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
-
     public void registerUserCloudFirestore(){
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>(){
             @Override

@@ -348,8 +348,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
     @Override
-    public Task<Void> addReference(DocumentReference mReference){
-        return mFirestore.collection("Users")
+    public void addReference(DocumentReference mReference){
+        mFirestore.collection("Users")
                 .document(mAuth.getCurrentUser().getUid())
                 .update("favorites", FieldValue.arrayUnion(mReference));
     }
@@ -436,6 +436,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                             Toast.makeText(getApplicationContext(), "Acceso administrador cancelada", Toast.LENGTH_SHORT).show();
+
                         }
                     });
             alerta.show();

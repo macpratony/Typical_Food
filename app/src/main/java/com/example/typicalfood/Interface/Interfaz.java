@@ -24,7 +24,7 @@ public interface Interfaz {
     //public void mapaFavorito(DocumentReference mReference, int posicion, String titulo);
     //public Map<String, Object> mapFavourite();
 
-    public Task<Void> addReference(DocumentReference mReference);
+    public void addReference(DocumentReference mReference);
     public Task<Void> removeReference(DocumentReference mReference);
 
     public void accesAdministrator(String nombre, String correo);

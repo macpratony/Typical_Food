@@ -44,6 +44,7 @@ public class LoginAdminFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login_admin, container, false);
 
         inicializar();
+        comprobateUser();
 
         return view;
     }

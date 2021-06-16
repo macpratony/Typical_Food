@@ -36,36 +36,45 @@ public class ViewModelFavorites extends ViewModel {
 
     private MutableLiveData<List<FavoritosPlatos>> favPlatos;
     private MutableLiveData<List<DocumentSnapshot>> documentList;
+    private MutableLiveData<List<DocumentSnapshot>> listUser;
+
+    public MutableLiveData<List<DocumentSnapshot>> getListUser() {
+        return listUser;
+    }
 
     public MutableLiveData<List<DocumentSnapshot>> getDocumentList() {
         return documentList;
     }
-
-    public ViewModelFavorites(){
-        favPlatos = new MutableLiveData<>();
-        documentList = new MutableLiveData<>();
-
-            existPlate();
-            searchDish();
-    }
-
     public LiveData<List<FavoritosPlatos>> getFavPlatos() {
 
         return favPlatos;
     }
 
-    public void existPlate(){
-        mFirestore.collection("Users").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    UserPojo user = documentSnapshot.toObject(UserPojo.class);
-                    List<DocumentReference> ref = user.getFavorites();
+    public ViewModelFavorites(){
+        favPlatos = new MutableLiveData<>();
+        documentList = new MutableLiveData<>();
+        listUser = new MutableLiveData<>();
 
-                    if(ref.size() > 0){
-                        for (int i= 0; i < ref.size(); i++){
-                            String r = ref.get(i).getPath();
-                            String[] prueba = r.split("/");
+            existPlate();
+            searchDish();
+            serachEmail();
+    }
+
+
+
+    public void existPlate() {
+        if (mAuth.getCurrentUser() != null){
+            mFirestore.collection("Users").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        UserPojo user = documentSnapshot.toObject(UserPojo.class);
+                        List<DocumentReference> ref = user.getFavorites();
+
+                        if (ref.size() > 0) {
+                            for (int i = 0; i < ref.size(); i++) {
+                                String r = ref.get(i).getPath();
+                                String[] prueba = r.split("/");
                                 city = prueba[1];
                                 posicion = Integer.parseInt(prueba[3]);
 
@@ -73,17 +82,18 @@ public class ViewModelFavorites extends ViewModel {
                                 //El array prueba contiene el texto de arriba separado por / siendo provincia la posicion 0 , etc
                                 //Enviamos por parametro la provincia que corresponde a la posicion 1 y la posicion del plato que corresponde a la posicion 3 del array
                                 //Como es un string se trasforma a Integer
-                               getPlateFavorite(city, posicion);
-                        }
+                                getPlateFavorite(city, posicion);
+                            }
 
+                        }
+                    } else {
+                        System.out.println("No existe favoritos");
                     }
-                }else{
-                    System.out.println("No existe favoritos");
+
                 }
 
-            }
-
-        });
+            });
+        }
     }
 
     public void getPlateFavorite(String city, int posicion){
@@ -117,6 +127,15 @@ public class ViewModelFavorites extends ViewModel {
             //List<DocumentSnapshot> list = t.getDocuments();
         });
 
+    }
+
+    //Metodo que comprueba si existe el email en la base de datos para poder recuperar la contraseña
+    public void serachEmail(){
+        Task<QuerySnapshot> future = mFirestore.collection("Users").get();
+        future.addOnSuccessListener(t->{
+            listUser.setValue(t.getDocuments());
+            //List<DocumentSnapshot> list = t.getDocuments();
+        });
     }
 
 }

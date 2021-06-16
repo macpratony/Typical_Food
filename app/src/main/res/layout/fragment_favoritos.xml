@@ -20,6 +20,8 @@
             android:layout_gravity="center_horizontal"
             android:text="FAVORITOS"
             android:textSize="20dp"
+            android:textColor="@color/color_texto_item"
+            android:fontFamily="@font/finserifdisplay_italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.209"
@@ -32,13 +34,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="98dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recicleFav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txtMensajeFavorito"
+            android:layout_width="match_parent"
+            android:layout_marginTop="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="NO TIENES NINGUN PLATO AGREGADO \nCOMO FAVORITO..." />
     </LinearLayout>
 
 

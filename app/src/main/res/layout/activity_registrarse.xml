@@ -29,14 +29,14 @@
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:src="@drawable/logo_app"
                 app:civ_border_color="@color/color_primario"
                 app:civ_border_width="3dp"
@@ -45,7 +45,7 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.117" />
+                app:layout_constraintVertical_bias="0.212" />
 
             <EditText
                 android:id="@+id/contrasena"
@@ -79,6 +79,7 @@
                 android:layout_marginTop="8dp"
                 android:backgroundTint="@color/color_primario"
                 android:text="@string/boton_cancelar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnCrearCuenta" />

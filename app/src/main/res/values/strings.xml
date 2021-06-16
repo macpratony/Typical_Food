@@ -11,7 +11,6 @@
     <string name="hint_nombre_plato">Ingrese Nombre del Plato</string>
 
 
-
     <!-- NOMBRES DE BOTONES -->
     <string name="boton_acceder">ACCEDER</string>
     <string name="boton_registrar">REGISTRARSE</string>
@@ -23,11 +22,12 @@
     <string name="olvido_contrasena">¿Ha olvidado la contraseña?</string>
     <string name="boton_regresar">REGRESAR</string>
     <string name="boton_subir_plato">SUBIR PLATO</string>
+    <string name="boton_inicio">INICIO</string>
 
 
     <!-- TITULOS PRINCIPALES -->
     <string name="seleccion_provincia">SELECCIONE UNA PROVINCIA</string>
-    <string name="ingrese_correo">Ingrese su correo electrónico</string>
+    <string name="ingrese_correo">Ingrese correo electrónico</string>
     <string name="typical_food">Typical Food</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -38,6 +38,7 @@
     <string name="menu_platos">Platos Favoritos</string>
     <string name="menu_administrador">Acceso Administrador</string>
     <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+    <string name="menu_iniciar_sesion">Iniciar Sesión</string>
     <string name="title_click">Title click</string>
     <string name="copyright">© Marco Prado - www.typicalfood.com</string>
 

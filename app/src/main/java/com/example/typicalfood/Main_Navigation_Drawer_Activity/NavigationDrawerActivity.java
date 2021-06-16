@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static java.lang.String.valueOf;
 
 
 @SuppressWarnings("ALL")
@@ -86,6 +88,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
     private TextView nameUsuario;
     private TextView emailUsuario;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +111,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         //viewModel = new ViewModelProvider(this).get(ViewModelFavorites.class);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        // mRecyclerView.setLayoutManager(layoutManager);
-
         NavigationView navigationView = findViewById(R.id.navigation_view);
-
         header = navigationView.getHeaderView(0);
         nameUsuario = (TextView) header.findViewById(R.id.nombreUsuario);
         emailUsuario = (TextView) header.findViewById(R.id.correoUsuario);
@@ -122,9 +122,19 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         onNavigationItemSelected(menuItem);
         menuItem.setChecked(true);
 
+        //Buscar item para ocultarlo dependiendo si ha iniciado sesión o no...
+        menu = navigationView.getMenu();
+        MenuItem login = menu.findItem(R.id.nav_login);
+        MenuItem loguot = menu.findItem(R.id.nav_logout);
+
         drawerLayout.addDrawerListener(this);
         if(mAuth.getCurrentUser() != null){
+            loguot.setVisible(true);
+            login.setVisible(false);
             getUserInfo();
+        }else{
+            loguot.setVisible(false);
+            login.setVisible(true);
         }
 
     }
@@ -209,7 +219,11 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 mAuth.signOut();
                 startActivity(new Intent(NavigationDrawerActivity.this, NavigationDrawerActivity.class));
                 finish();//Finaliza la tarea para que no pueda volver atras
+                break;
 
+            case R.id.nav_login:
+                title = R.string.menu_iniciar_sesion;
+                startActivity(new Intent(NavigationDrawerActivity.this, ScreenMainActivity.class));
                 break;
             default:
                 throw new IllegalArgumentException("menu option not implemented!!");
@@ -364,6 +378,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
     public void accesoAdmin(){
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         if(mAuth.getCurrentUser() != null){
             String id = mAuth.getCurrentUser().getUid();
             mFirestore.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -376,24 +391,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                             fragmentManager.beginTransaction().replace(R.id.home_content, new AdministradorFragment()).commit();
                         }else{
                             //Si no existe usuario registrado sale una ventana de alerta
-                            AlertDialog.Builder alerta = new AlertDialog.Builder(NavigationDrawerActivity.this);
-                            alerta.setTitle("INFORMATION")
-                                    .setMessage("Para acceder debe contar con una cuenta de administrador \n\n ¿Desea iniciar sesión?")
-                                    .setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
-                                            startActivity(i);
-                                        }
-                                    })
-                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.cancel();
-                                            Toast.makeText(getApplicationContext(), "Acceso administrador cancelada", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                            alerta.show();
+                            alertDialogAdmin();
                         }
 
                     }
@@ -405,8 +403,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 }
             });
         }else{
+            alertDialogAdmin();
             Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
-            startActivity(i);
+           // startActivity(i);
         }
 
     }
@@ -421,25 +420,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             fragmentTransaction.commit();
         }else{
             //Si no existe usuario registrado sale una ventana de alerta
-            AlertDialog.Builder alerta = new AlertDialog.Builder(getApplicationContext());
-            alerta.setTitle("INFORMATION")
-                    .setMessage("Para acceder debe contar con una cuenta de administrador \n\n ¿Desea iniciar sesión?")
-                    .setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
-                            startActivity(i);
-                        }
-                    })
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            Toast.makeText(getApplicationContext(), "Acceso administrador cancelada", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-            alerta.show();
+            alertDialogAdmin();
         }
     }
 
@@ -451,6 +432,29 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
+    }
+
+    //Metodo que avisa al usuario que si desea entrar al item de administrador debe contar con una cuenta admin
+    public void alertDialogAdmin(){
+        //Si no existe usuario registrado sale una ventana de alerta
+        AlertDialog.Builder alerta = new AlertDialog.Builder(NavigationDrawerActivity.this);
+        alerta.setTitle("INFORMATION")
+                .setMessage("Para acceder debe contar con una cuenta de administrador \n\n ¿Desea iniciar sesión?")
+                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
+                         startActivity(i);
+                    }
+                })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Toast.makeText(getApplicationContext(), "Acceso administrador cancelada", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        alerta.show();
     }
 
 }

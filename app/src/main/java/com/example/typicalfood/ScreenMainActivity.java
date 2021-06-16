@@ -16,6 +16,7 @@ public class ScreenMainActivity extends AppCompatActivity {
 
     private Button buttonCuenta;
     private Button buttonRegistrarse;
+    private Button buttonInicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,22 +25,14 @@ public class ScreenMainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        buttonCuenta = (Button) findViewById(R.id.btnYaTengoCuenta);
-        buttonRegistrarse = (Button) findViewById(R.id.btnRegistrarse);
+        buttonCuenta =  findViewById(R.id.btnYaTengoCuenta);
+        buttonRegistrarse = findViewById(R.id.btnRegistrarse);
+        buttonInicio = findViewById(R.id.btnInicio);
 
-        buttonCuenta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ScreenMainActivity.this, AutenticacionActivity.class));
-            }
-        });
+        btnInicio();
+        btnAccount();
+        btnCheckIn();
 
-        buttonRegistrarse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ScreenMainActivity.this, RegistrarseActivity.class));
-            }
-        });
     }
 
     @Override
@@ -50,6 +43,33 @@ public class ScreenMainActivity extends AppCompatActivity {
             startActivity(new Intent(ScreenMainActivity.this, NavigationDrawerActivity.class));
             finish();
         }
+    }
+
+    public void btnInicio(){
+        buttonInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScreenMainActivity.this, NavigationDrawerActivity.class));
+            }
+        });
+    }
+
+    public void btnAccount(){
+        buttonCuenta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScreenMainActivity.this, AutenticacionActivity.class));
+            }
+        });
+    }
+
+    public void btnCheckIn(){
+        buttonRegistrarse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScreenMainActivity.this, RegistrarseActivity.class));
+            }
+        });
     }
 
 

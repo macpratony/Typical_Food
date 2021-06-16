@@ -12,17 +12,20 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
-                android:layout_width="157dp"
+                android:layout_width="160dp"
                 android:layout_height="160dp"
                 android:src="@drawable/logo_app"
                 app:civ_border_color="@color/color_primario"
@@ -32,7 +35,7 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.113" />
+                app:layout_constraintVertical_bias="0.227" />
 
             <EditText
                 android:id="@+id/emailEditext"
@@ -64,22 +67,22 @@
                 android:id="@+id/btnAcceder"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="72dp"
                 android:backgroundTint="@color/color_secundario"
                 android:text="@string/boton_acceder"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewRespuesta" />
+                app:layout_constraintTop_toBottomOf="@+id/contrasenaEditext" />
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
+            <Button
+                android:id="@+id/btnCancel"
                 android:layout_width="300dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_primario"
+                android:text="@string/boton_cancelar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnAcceder" />
 
@@ -97,14 +100,12 @@
                 android:id="@+id/recuperarContrasena"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="@string/olvido_contrasena"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/purple_500"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.585"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
+                app:layout_constraintTop_toBottomOf="@+id/btnCancel" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

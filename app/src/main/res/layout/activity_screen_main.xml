@@ -9,13 +9,14 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="300dp"
-        android:layout_height="56dp"
+        android:layout_width="321dp"
+        android:layout_height="84dp"
         android:layout_marginTop="64dp"
+        android:fontFamily="@font/finserifdisplay_italic"
         android:text="@string/typical_food"
         android:textAlignment="center"
         android:textColor="@color/color_primario"
-        android:textSize="36sp"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,26 +39,36 @@
         android:id="@+id/btnYaTengoCuenta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:backgroundTint="@color/color_secundario"
         android:text="@string/boton_ya_tengo_cuenta"
         android:textColor="@color/white"
         android:textColorHighlight="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/btnRegistrarse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnRegistrarse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
         android:backgroundTint="@color/color_primario"
         android:text="@string/boton_registrar"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btnInicio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnInicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/primary"
+        android:text="@string/boton_inicio"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

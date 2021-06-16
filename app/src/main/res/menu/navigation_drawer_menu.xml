@@ -39,4 +39,13 @@
             android:title="@string/menu_cerrar_sesion" />
     </group>
 
+    <group
+        android:id="@+id/group5"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/outline_login_24"
+            android:title="@string/menu_iniciar_sesion" />
+    </group>
+
 </menu>

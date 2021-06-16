@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -176,7 +177,6 @@ public class DetallePlatoFragment extends Fragment {
                             break;
                         }
                     }
-
                     favoritePlate();
                 }
             });
@@ -188,7 +188,6 @@ public class DetallePlatoFragment extends Fragment {
 
     public void favoritePlate(){
         if(isFavorite){
-
             lottieAnimationView.setImageResource(R.drawable.twitter_like2);
         }else{
             lottieAnimationView.setImageResource(R.drawable.twitter_like);

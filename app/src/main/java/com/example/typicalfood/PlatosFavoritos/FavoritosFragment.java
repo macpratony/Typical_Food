@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.typicalfood.Adapter.AdapterFavorito;
@@ -55,6 +56,7 @@ public class FavoritosFragment extends Fragment {
     private List<FavoritosPlatos> listPlate = new ArrayList<>();
     private Interfaz mInterfaz;
     private Activity actividad;
+    private TextView txtMensaje;
 
     protected ViewModelFavorites viewModel;
 
@@ -73,6 +75,7 @@ public class FavoritosFragment extends Fragment {
             View view = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
             recyclerView = view.findViewById(R.id.recicleFav);
+            txtMensaje = view.findViewById(R.id.txtMensajeFavorito);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             mAuth = FirebaseAuth.getInstance();
@@ -95,14 +98,22 @@ public class FavoritosFragment extends Fragment {
                 public void onChanged(List<FavoritosPlatos> favoritosPlatosList) {
 
                     platosList = favoritosPlatosList;
-                    adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
-                    recyclerView.setAdapter(adapter);
+                    if(platosList.size() == 0){
+                        txtMensaje.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                    }else{
+                        txtMensaje.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
+                        recyclerView.setAdapter(adapter);
 
-                    adapter.setOnclickListener(view -> {
+                        adapter.setOnclickListener(view -> {
 
-                        mInterfaz.enviarPlatosFavoritos(platosList.get(recyclerView.getChildAdapterPosition(view)));
+                            mInterfaz.enviarPlatosFavoritos(platosList.get(recyclerView.getChildAdapterPosition(view)));
 
-                    });
+                        });
+                    }
+
                 }
             });
 

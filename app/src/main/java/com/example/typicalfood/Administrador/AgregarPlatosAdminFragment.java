@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -61,6 +63,9 @@ public class AgregarPlatosAdminFragment extends Fragment {
     private String nombreProvincia;
     private String nombrePlato;
     private String descrip;
+    private AdministradorFragment admin;
+    private FragmentTransaction fragmentTransaction;
+    private ProgressBar mProgressBar;
 
     private Uri keyImage;
     private static final int GALLERY_INTENT = 1;
@@ -82,6 +87,8 @@ public class AgregarPlatosAdminFragment extends Fragment {
         imageViewPlato = view.findViewById(R.id.fotoPlato);
         enviarPlato = view.findViewById(R.id.btnSubirPlato);
         cancelarPlato = view.findViewById(R.id.btncancelarPlato);
+        mProgressBar = view.findViewById(R.id.progressBarLoad);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         initialize();
         savePlateFirebase();
@@ -141,6 +148,12 @@ public class AgregarPlatosAdminFragment extends Fragment {
 
                             if(listaProvincia.contains(nombreProvincia)){
                                 savePlato( map);
+
+                                admin = new AdministradorFragment();
+                                fragmentTransaction = getParentFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.home_content, admin);
+                                fragmentTransaction.commit();
+
                                 Snackbar.make(getView(), "Plato añadido con éxito", Snackbar.LENGTH_LONG).show();
                             }else{
                                 Snackbar.make(getView(), "No existe o no coincide el nombre de la provincia con la de la base de datos", Snackbar.LENGTH_LONG).show();
@@ -164,6 +177,11 @@ public class AgregarPlatosAdminFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                admin = new AdministradorFragment();
+                fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.home_content, admin);
+                fragmentTransaction.commit();
+
             }
         });
     }
@@ -174,22 +192,32 @@ public class AgregarPlatosAdminFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == GALLERY_INTENT){
-                Uri uri = data.getData();
-                StorageReference filePath = mStorage.child("Fotos");
-                final StorageReference fileName = filePath.child("file"+uri.getLastPathSegment());
-
+            Uri uri = data.getData();
+            StorageReference filePath = mStorage.child("Fotos");
+            final StorageReference fileName = filePath.child("file"+uri.getLastPathSegment());
+            mProgressBar.setVisibility(View.VISIBLE);
+            enviarPlato.setVisibility(View.INVISIBLE);
+            cancelarPlato.setVisibility(View.INVISIBLE);
                 fileName.putFile(uri).addOnSuccessListener(taskSnapshot -> fileName.getDownloadUrl().addOnSuccessListener(uri1 -> {
 
                     Uri descargarFoto = uri1;
                     keyImage = uri1;
 
-                    //Muestra la foto cargada en firebase
-                    Glide.with(getContext())
-                            .load(descargarFoto)
-                            .fitCenter()
-                            .centerCrop()
-                            .into(imageViewPlato);
+                    if(descargarFoto != null){
+                        //Muestra la foto cargada en firebase
+                        Glide.with(getContext())
+                                .load(descargarFoto)
+                                .fitCenter()
+                                .centerCrop()
+                                .into(imageViewPlato);
+                    }
+                    mProgressBar.setVisibility(View.GONE);
+                    enviarPlato.setVisibility(View.VISIBLE);
+                    cancelarPlato.setVisibility(View.VISIBLE);
+
+
                 }));
+
 
         }else{
             Snackbar.make(getView(), "Error al cargar la foto...", Snackbar.LENGTH_LONG).show();

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,7 +56,8 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       String title = platosList.get(position).getTitulo();
+
+        String title = platosList.get(position).getTitulo();
        String photo = platosList.get(position).getFoto();
        String descripcion = platosList.get(position).getDescripcion();
 
@@ -63,6 +65,7 @@ public class AdapterPlatos extends RecyclerView.Adapter<AdapterPlatos.ViewHolder
         Glide.with(context).load(photo).into(holder.imageViewFoto);//Transforma el enlace url en imagen
 
         holder.cardView.setOnClickListener(this);
+
     }
 
     @Override

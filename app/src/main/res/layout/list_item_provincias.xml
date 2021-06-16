@@ -4,7 +4,7 @@
     android:background="@drawable/selector_item"
     android:textSize="24sp"
     android:padding="20sp"
-    android:textColor="@color/color_bandera2"
+    android:textColor="@color/color_texto_item"
     xmlns:android="http://schemas.android.com/apk/res/android" />
 
 <!-- Layout personalizado para poder modificar el color el tamaño y la separacion de los item-->

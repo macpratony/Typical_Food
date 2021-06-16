@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,14 +36,16 @@ import static android.content.ContentValues.TAG;
 
 public class PlatosFragment extends Fragment {
 
-     private RecyclerView recyclerView;
+     public RecyclerView recyclerView;
      private AdapterPlatos adapterPlatos;
      private Interfaz mInterfaz;
      private ArrayList<Platos> listaPlatos;
     private TextView title;
     private ImageButton button;
-    private String provincia="";
+    private String provincia;
     private Activity actividad;
+
+    public ProgressBar mProgressBar;
 
     public PlatosFragment() {
         // Required empty public constructor
@@ -55,40 +58,66 @@ public class PlatosFragment extends Fragment {
 
         title = v.findViewById(R.id.txtTitulo);
         button = v.findViewById(R.id.buttonRegresar);
+        recyclerView = v.findViewById(R.id.recyclerView);
+        mProgressBar = v.findViewById(R.id.progressBar2);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        listaPlatos = new ArrayList<>();
+
+        try {
+            mostrarDatos();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        btnRegresar();
+
+        return v;
+    }
+
+    public void btnRegresar(){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mInterfaz.regresar();
             }
         });
-        recyclerView = v.findViewById(R.id.recyclerView);
-        listaPlatos = new ArrayList<>();
-
-        mostrarDatos();
-        return v;
     }
 
-    public void mostrarDatos() {
+    public void mostrarDatos() throws InterruptedException {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        Bundle city = getArguments();
+
+
+            Bundle city = getArguments();
             if(city != null){
                 listaPlatos = (ArrayList<Platos>) city.getSerializable("city");
                 provincia = (String) city.getSerializable("provincia");
-            }
+
+            title.setText(provincia);
+                mProgressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            adapterPlatos = new AdapterPlatos(getContext(), R.layout.item_platos_provincia, listaPlatos);
+            recyclerView.setAdapter(adapterPlatos);
+                mProgressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+
 
             //Titulo que se añade en el fragment del listado de platos de la ciudad que se pulsa
-            title.setText(provincia);
-        adapterPlatos = new AdapterPlatos(getContext(),R.layout.item_platos_provincia,listaPlatos);
-        recyclerView.setAdapter(adapterPlatos);
 
-        adapterPlatos.setOnclickListener(view -> {
-            //enviar mediante la interface el objeto seleccionado al detalle
-            //se envia el objeto completo
-            //se utiliza la interface como puente para enviar el objeto seleccionado
-            mInterfaz.enviarPlatos(listaPlatos.get(recyclerView.getChildAdapterPosition(view)), provincia);
-            //luego en el mainactivity se hace la implementacion de la interface para implementar el metodo enviarpersona
-        });
 
+            adapterPlatos.setOnclickListener(view -> {
+                //enviar mediante la interface el objeto seleccionado al detalle
+                //se envia el objeto completo
+                //se utiliza la interface como puente para enviar el objeto seleccionado
+                mInterfaz.enviarPlatos(listaPlatos.get(recyclerView.getChildAdapterPosition(view)), provincia);
+                //luego en el mainactivity se hace la implementacion de la interface para implementar el metodo enviarpersona
+            });
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 

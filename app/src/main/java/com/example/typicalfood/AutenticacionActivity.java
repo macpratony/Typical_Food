@@ -42,6 +42,7 @@ public class AutenticacionActivity extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextContrasena;
     private Button btnLogin;
+    private Button btnCancel;
     private TextView mTextViewRespuesta;
     private TextView mRecuperarContrasena;
 
@@ -58,24 +59,24 @@ public class AutenticacionActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        editTextEmail = (EditText)findViewById(R.id.emailEditext);
-        editTextContrasena = (EditText)findViewById(R.id.contrasenaEditext);
-        mTextViewRespuesta = (TextView) findViewById(R.id.textViewRespuesta);
-        mRecuperarContrasena = (TextView) findViewById(R.id.recuperarContrasena);
+        editTextEmail = findViewById(R.id.emailEditext);
+        editTextContrasena = findViewById(R.id.contrasenaEditext);
+        mTextViewRespuesta =  findViewById(R.id.textViewRespuesta);
 
-        mRecuperarContrasena.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AutenticacionActivity.this, ResetPasswordActivity.class));
-            }
-        });
+        mRecuperarContrasena = findViewById(R.id.recuperarContrasena);
+        btnLogin = findViewById(R.id.btnAcceder);
+        btnCancel = findViewById(R.id.btnCancel);
 
-        btnLogin = (Button)findViewById(R.id.btnAcceder);
+        recoverPassword();
+        btnLogin();
+        btnCancel();
 
+    }
+
+    public void btnLogin(){
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 email = editTextEmail.getText().toString().trim();
                 password = editTextContrasena.getText().toString().trim();
@@ -90,6 +91,27 @@ public class AutenticacionActivity extends AppCompatActivity {
 
                     loginUser();
                 }
+            }
+        });
+    }
+
+    public void recoverPassword(){
+        mRecuperarContrasena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AutenticacionActivity.this, ResetPasswordActivity.class));
+            }
+        });
+    }
+
+    public void btnCancel(){
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ScreenMainActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }

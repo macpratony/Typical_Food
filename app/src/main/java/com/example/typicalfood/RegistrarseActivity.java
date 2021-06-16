@@ -133,6 +133,7 @@ public class RegistrarseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ScreenMainActivity.class);
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -146,7 +147,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("name", nombre);
                     map.put("email", email);
-                    map.put("password", password);
+                    //map.put("password", password);
                     map.put("favorites", listReference);
 
                     String id = mAuth.getCurrentUser().getUid();

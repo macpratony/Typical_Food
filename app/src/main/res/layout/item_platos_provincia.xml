@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_fondo1"
+        android:background="@color/color_fondo_item_plato"
         android:orientation="vertical"
         android:padding="2dp">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +43,7 @@
         <ImageView
             android:id="@+id/imagen_plato"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_gravity="center"
             android:padding="5dp"
             android:src="@drawable/ic_launcher_background">

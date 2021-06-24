@@ -8,9 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.typicalfood.Administrador.AdministradorFragment;
 import com.example.typicalfood.Administrador.AgregarPlatosAdminFragment;
 import com.example.typicalfood.AutenticacionActivity;
@@ -41,23 +38,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import static android.content.ContentValues.TAG;
-import static java.lang.String.valueOf;
+
 
 
 @SuppressWarnings("ALL")
@@ -180,9 +173,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
     @Override
     public void onDrawerOpened(@NonNull View drawerView) {
-        //el drawer se ha abierto completamente
-//        Toast.makeText(this, getString(R.string.navigation_drawer_open),
-//                Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -299,10 +290,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
                                             adapterPlatos = new AdapterPlatos(getBaseContext(),R.layout.item_platos_provincia, platosList);
                                         }
-                                        // Toast.makeText(getContext(),  titulo, Toast.LENGTH_SHORT).show();
 
-                                    } else {
-                                        //Toast.makeText(NavigationDrawerActivity.this, "La ciudad seleccionada no contiene ningun plato", Toast.LENGTH_SHORT).show();
                                     }
 
                                 } else {
@@ -316,7 +304,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                 });
 
         return adapterPlatos;
-        // [END get_all_users]
     }
 
     @Override
@@ -359,21 +346,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.home_content, provinciasFragment);
         fragmentTransaction.commit();
-    }
-
-    @Override
-    public void addReference(DocumentReference mReference){
-        mFirestore.collection("Users")
-                .document(mAuth.getCurrentUser().getUid())
-                .update("favorites", FieldValue.arrayUnion(mReference));
-    }
-
-    @Override
-    public Task<Void> removeReference(DocumentReference mReference) {
-        return mFirestore.collection("Users")
-                .document(mAuth.getCurrentUser().getUid())
-                .update("favorites", FieldValue.arrayRemove(mReference));
-
     }
 
     public void accesoAdmin(){

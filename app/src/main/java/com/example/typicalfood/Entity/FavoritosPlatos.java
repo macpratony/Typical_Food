@@ -1,10 +1,6 @@
 package com.example.typicalfood.Entity;
 
-import com.google.firebase.firestore.DocumentReference;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FavoritosPlatos implements Serializable{
 

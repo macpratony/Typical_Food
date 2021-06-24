@@ -1,16 +1,10 @@
 package com.example.typicalfood.ViewModel;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-
 import com.example.typicalfood.Entity.FavoritosPlatos;
-
 import com.example.typicalfood.Pojo.UserPojo;
-;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,11 +12,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 
 public class ViewModelFavorites extends ViewModel {
@@ -32,7 +25,6 @@ public class ViewModelFavorites extends ViewModel {
     private List<FavoritosPlatos> listPlate  = new ArrayList<>();
     private String city;
     private int posicion;
-    boolean exist = false;
 
     private MutableLiveData<List<FavoritosPlatos>> favPlatos;
     private MutableLiveData<List<DocumentSnapshot>> documentList;
@@ -78,10 +70,6 @@ public class ViewModelFavorites extends ViewModel {
                                 city = prueba[1];
                                 posicion = Integer.parseInt(prueba[3]);
 
-                                //Provincias/Albacete/platos/0
-                                //El array prueba contiene el texto de arriba separado por / siendo provincia la posicion 0 , etc
-                                //Enviamos por parametro la provincia que corresponde a la posicion 1 y la posicion del plato que corresponde a la posicion 3 del array
-                                //Como es un string se trasforma a Integer
                                 getPlateFavorite(city, posicion);
                             }
 
@@ -124,7 +112,6 @@ public class ViewModelFavorites extends ViewModel {
         Task<QuerySnapshot> future = mFirestore.collection("Provincias").get();
         future.addOnSuccessListener(t->{
             documentList.setValue(t.getDocuments());
-            //List<DocumentSnapshot> list = t.getDocuments();
         });
 
     }
@@ -134,7 +121,6 @@ public class ViewModelFavorites extends ViewModel {
         Task<QuerySnapshot> future = mFirestore.collection("Users").get();
         future.addOnSuccessListener(t->{
             listUser.setValue(t.getDocuments());
-            //List<DocumentSnapshot> list = t.getDocuments();
         });
     }
 

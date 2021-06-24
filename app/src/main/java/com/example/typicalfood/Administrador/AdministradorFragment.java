@@ -3,30 +3,23 @@ package com.example.typicalfood.Administrador;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.typicalfood.Interface.Interfaz;
-import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.example.typicalfood.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.concurrent.RunnableFuture;
 
 public class AdministradorFragment extends Fragment {
     private TextView welcomeUser;

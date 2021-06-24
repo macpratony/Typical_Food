@@ -5,7 +5,7 @@
     android:id="@+id/pro1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondo_rojo"
+    android:background="#03a9f4"
     android:orientation="vertical"
     tools:context=".Fragments.PlatosFragment">
 
@@ -18,28 +18,29 @@
             android:id="@+id/txtTitulo"
             android:layout_width="237dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.344"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.073"
+            app:layout_constraintStart_toEndOf="@+id/buttonRegresar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.491" />
 
         <ImageButton
             android:id="@+id/buttonRegresar"
-            android:layout_width="46dp"
-            android:layout_height="29dp"
+            android:layout_width="48dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@color/color_bandera1"
             android:src="@drawable/abc_vector_test"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txtTitulo"
-            app:layout_constraintHorizontal_bias="0.073"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.008"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.342" />
+            app:layout_constraintVertical_bias="0.492" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

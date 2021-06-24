@@ -48,7 +48,6 @@ public class FavoritosFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
-    private DocumentReference mReference;
 
     private AdapterFavorito adapter;
     private RecyclerView recyclerView;
@@ -59,10 +58,6 @@ public class FavoritosFragment extends Fragment {
     private TextView txtMensaje;
 
     protected ViewModelFavorites viewModel;
-
-    private String city;
-    private int posicion;
-    private boolean isFavorite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,6 +135,5 @@ public class FavoritosFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
     }
 }

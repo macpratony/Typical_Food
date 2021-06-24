@@ -1,17 +1,13 @@
 package com.example.typicalfood.Administrador;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.example.typicalfood.Interface.Interfaz;
-import com.example.typicalfood.Main_Navigation_Drawer_Activity.NavigationDrawerActivity;
 import com.example.typicalfood.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,15 +22,9 @@ public class LoginAdminFragment extends Fragment {
     private FirebaseFirestore mFirestore;
     private Interfaz mInterfaz;
 
-    private String email;
-    private String name;
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 

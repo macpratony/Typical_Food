@@ -169,7 +169,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                     });
 
                 }else{
-                    Toast.makeText(RegistrarseActivity.this, "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrarseActivity.this, "Ya existe una cuenta con el correo introducido...", Toast.LENGTH_SHORT).show();
                 }
             }
         });

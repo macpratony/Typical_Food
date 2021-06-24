@@ -26,7 +26,6 @@
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".RegistrarseActivity" />
         <activity android:name=".AutenticacionActivity" />
-        <activity android:name=".ProvinciasActivity" />
     </application>
 
 </manifest>

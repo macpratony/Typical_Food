@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Typical Food</string>
+
+    <!-- ETIQUETAS HINT -->
+
+    <string name="hint_nombre">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_contrasena">Password</string>
+    <string name="hint_confirmar_contrasena">Confirm Password</string>
+    <string name="hint_provincia">Enter Province Name</string>
+    <string name="hint_nombre_plato">Enter dish name</string>
+
+
+    <!-- NOMBRES DE BOTONES -->
+    <string name="boton_acceder">TO ACCESS</string>
+    <string name="boton_registrar">CHECK IN</string>
+    <string name="boton_acceder_google">GOOGLE</string>
+    <string name="crear_cuenta">CREATE ACCOUNT</string>
+    <string name="boton_cancelar">CANCEL</string>
+    <string name="boton_ya_tengo_cuenta">I HAVE ACCOUNT</string>
+    <string name="boton_restablecer_contrasena">RESTORE PASSWORD</string>
+    <string name="olvido_contrasena">Have you forgot your password?</string>
+    <string name="boton_regresar">TO RETURN</string>
+    <string name="boton_subir_plato">UP PLATE FOOD</string>
+    <string name="boton_inicio">START</string>
+
+
+    <!-- TITULOS PRINCIPALES -->
+    <string name="seleccion_provincia">SELECT A PROVINCE</string>
+    <string name="ingrese_correo">Enter email</string>
+    <string name="typical_food">Typical Food</string>
+    <string name="favoritos">FAVORITES</string>
+    <string name="nombre_usuario">USERNAME</string>
+
+    <!-- MENSAJES APP-->
+    <string name="mensaje_fav">YOU DON\'T HAVE ANY DISH</string>
+    <string name="mensaje_fav2">ADDED AS A FAVORITE...</string>
+    <string name="mensaje_email">The email entered does not exist in the database...</string>
+    <string name="mensaje_email2">Please enter email ...</string>
+    <string name="restablecer_contrasena">An email has been sent to reset your password, please check your inbox...</string>
+    <string name="mensaje1">Fill in all fields</string>
+    <string name="mensaje2">Please enter a name...</string>
+    <string name="mensaje3">Enter a valid email</string>
+    <string name="mensaje4">Please enter a password</string>
+    <string name="mensaje5">Enter an email and password</string>
+    <string name="mensaje6">The email entered is not valid</string>
+    <string name="mensaje7">Passwords do not match</string>
+    <string name="mensaje8">The password must be at least 6 characters</string>
+    <string name="mensaje9">User created successfully</string>
+    <string name="mensaje10">The data could not be created correctly</string>
+    <string name="mensaje11">There is already an account with the email entered...</string>
+    <string name="mensaje12">Incorrect email or password</string>
+    <string name="mensaje13">Connection error</string>
+
+    <!-- Alert Dialog -->
+    <string name="titulo">INFORMATION</string>
+    <string name="mensaje_alert_dialog">To access you must have an administrator account\n\nDo you want to log in?</string>
+    <string name="mensaje_si">Yes</string>
+    <string name="mensaje_no">Not</string>
+    <string name="mensaje_admin">Administrator access canceled</string>
+
+    <string name="mensaje_alert_dialog2">To add dishes to favorites you need to log in\n\nDo you want to log in?</string>
+    <string name="mensaje_favorito">The dish could not be added to a favorite</string>
+
+
+    <!-- Administrator -->
+    <string name="admin1">All fields are required to submit a dish to the database...</string>
+    <string name="admin2">Dish added successfully</string>
+    <string name="admin3">The name of the province does not exist or does not match the one in the database</string>
+    <string name="admin4">Error loading photo...</string>
+    <string name="admin5">WELCOME</string>
+    <string name="admin6">ADD TYPICAL DISH</string>
+
+
+
+
+
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_provincia">Province</string>
+    <string name="menu_platos">Favorite Dishes</string>
+    <string name="menu_administrador">Administrator Access</string>
+    <string name="menu_cerrar_sesion">Sign off</string>
+    <string name="menu_iniciar_sesion">Log in</string>
+    <string name="title_click">Title click</string>
+    <string name="copyright">© Marco Prado - www.typicalfood.com</string>
+</resources>

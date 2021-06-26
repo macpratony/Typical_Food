@@ -29,6 +29,8 @@ public class AdministradorFragment extends Fragment {
     private FirebaseFirestore mFirestore;
     private Interfaz mInterfaz;
 
+    private String message;
+
     public static int MILISEGUNDOS_ESPERA = 1500;
     private Activity actividad;
 
@@ -69,14 +71,16 @@ public class AdministradorFragment extends Fragment {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
                         String nombre = documentSnapshot.getString("name");
-                        welcomeUser.setText("BIENVENIDO "+nombre);
+                        message = getString(R.string.admin5);
+                        welcomeUser.setText(message+" "+nombre);
 
                     }
                 }
             }).addOnFailureListener(new OnFailureListener(){
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "error de conexion", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje13);
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
 

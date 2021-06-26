@@ -33,6 +33,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private TextView mTextViewRespuesta;
 
     private String email;
+    private String massage;
 
     private FirebaseAuth mAuth;
     private ProgressBar mProgressBar;
@@ -108,10 +109,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 mButtonReturn.setVisibility(View.GONE);
                                 ressetPassword();
                             }else{
-                                mTextViewRespuesta.setText("El email introducido no existe en la base de datos ...");
+                                massage = getString(R.string.mensaje_email);
+                                mTextViewRespuesta.setText(massage);
                             }
                         }else{
-                            mTextViewRespuesta.setText("Por favor ingrese un email ...");
+                            massage = getString(R.string.mensaje_email2);
+                            mTextViewRespuesta.setText(massage);
                         }
                     }
             });
@@ -131,7 +134,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
                     startActivity(i);
                     finish();
-                    Toast.makeText(ResetPasswordActivity.this, "Se ha enviado un correo para restablecer la contraseña, revise la bandeja de entrada...", Toast.LENGTH_SHORT).show();
+                    massage = getString(R.string.restablecer_contrasena);
+                    Toast.makeText(ResetPasswordActivity.this, massage, Toast.LENGTH_SHORT).show();
                 }
             }
         });

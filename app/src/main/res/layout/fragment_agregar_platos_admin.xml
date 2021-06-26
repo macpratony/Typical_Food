@@ -59,7 +59,7 @@
                 android:layout_marginTop="64dp"
                 android:background="@color/black"
                 android:fontFamily="@font/finserifdisplay_italic"
-                android:text="AÑADIR PLATO TÍPICO"
+                android:text="@string/admin6"
                 android:textColor="@color/color_primario"
                 android:textSize="25dp"
                 android:typeface="serif"

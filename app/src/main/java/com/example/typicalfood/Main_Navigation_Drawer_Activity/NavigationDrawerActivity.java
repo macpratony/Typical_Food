@@ -82,6 +82,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     private TextView nameUsuario;
     private TextView emailUsuario;
     private Menu menu;
+    private String message;
+    private String message1;
+    private String message2;
+    private String message3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +152,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             }).addOnFailureListener(new OnFailureListener(){
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(NavigationDrawerActivity.this, "error de conexion", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje13);
+                    Toast.makeText(NavigationDrawerActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -371,7 +376,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             }).addOnFailureListener(new OnFailureListener(){
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), "error de conexion", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje13);
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
@@ -410,20 +416,26 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     public void alertDialogAdmin(){
         //Si no existe usuario registrado sale una ventana de alerta
         AlertDialog.Builder alerta = new AlertDialog.Builder(NavigationDrawerActivity.this);
-        alerta.setTitle("INFORMATION")
-                .setMessage("Para acceder debe contar con una cuenta de administrador \n\n ¿Desea iniciar sesión?")
-                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+        message = getString(R.string.titulo);
+        message1 = getString(R.string.mensaje_alert_dialog);
+        message2 = getString(R.string.mensaje_si);
+        message3 = getString(R.string.mensaje_no);
+
+        alerta.setTitle(message)
+                .setMessage(message1)
+                .setPositiveButton(message2, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
                          startActivity(i);
                     }
                 })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                .setNegativeButton(message3, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        Toast.makeText(getApplicationContext(), "Acceso administrador cancelada", Toast.LENGTH_SHORT).show();
+                        message = getString(R.string.mensaje_admin);
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
         alerta.show();

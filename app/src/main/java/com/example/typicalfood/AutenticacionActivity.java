@@ -25,6 +25,7 @@ public class AutenticacionActivity extends AppCompatActivity {
     private Button btnCancel;
     private TextView mTextViewRespuesta;
     private TextView mRecuperarContrasena;
+    private String message;
 
     private String email = "";
     private String password = "";
@@ -59,13 +60,15 @@ public class AutenticacionActivity extends AppCompatActivity {
                 password = editTextContrasena.getText().toString().trim();
 
                 if(email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(AutenticacionActivity.this, "Introduzca email y contraseña", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje5);
+                    Toast.makeText(AutenticacionActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(!email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(AutenticacionActivity.this, "Introduzca una contraseña", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje4);
+                    Toast.makeText(AutenticacionActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(email.isEmpty() && !password.isEmpty()){
-                    Toast.makeText(AutenticacionActivity.this, "Introduzca un email", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje3);
+                    Toast.makeText(AutenticacionActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else{
-
                     loginUser();
                 }
             }
@@ -105,7 +108,8 @@ public class AutenticacionActivity extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                             } else {
-                                mTextViewRespuesta.setText("Correo o contraseña incorrecto");
+                                message = getString(R.string.mensaje12);
+                                mTextViewRespuesta.setText(message);
                             }
                         }
                     });
@@ -120,7 +124,8 @@ public class AutenticacionActivity extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                             } else {
-                                mTextViewRespuesta.setText("Correo o contraseña incorrecto");
+                                message = getString(R.string.mensaje12);
+                                mTextViewRespuesta.setText(message);
                             }
                         }
                     });

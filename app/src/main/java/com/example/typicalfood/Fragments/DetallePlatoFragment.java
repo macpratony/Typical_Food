@@ -64,6 +64,12 @@ public class DetallePlatoFragment extends Fragment {
     private Activity actividad;
     private ArrayList<DocumentReference> ref = new ArrayList<DocumentReference>();
 
+    private String message;
+    private String message1;
+    private String message2;
+    private String message3;
+
+
 
     private boolean isFavorite = false;
 
@@ -121,20 +127,27 @@ public class DetallePlatoFragment extends Fragment {
         }else{
             //Si no existe usuario registrado sale una ventana de alerta
             AlertDialog.Builder alerta = new AlertDialog.Builder(getActivity());
-            alerta.setTitle("INFORMATION")
-                    .setMessage("Para agregar platos a favoritos es necesario que inicie sesión \n\n ¿Desea iniciar sesión?")
-                    .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            message = getString(R.string.titulo);
+            message1 = getString(R.string.mensaje_alert_dialog2);
+            message2 = getString(R.string.mensaje_si);
+            message3 = getString(R.string.mensaje_no);
+
+
+            alerta.setTitle(message)
+                    .setMessage(message1)
+                    .setPositiveButton(message2, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent i = new Intent(getActivity(), ScreenMainActivity.class);
                             startActivity(i);
                         }
                     })
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(message3, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            Toast.makeText(getContext(), "No se ha podido añadir el plato a favorito", Toast.LENGTH_SHORT).show();
+                            message = getString(R.string.mensaje_favorito);
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                         }
                     });
             alerta.show();

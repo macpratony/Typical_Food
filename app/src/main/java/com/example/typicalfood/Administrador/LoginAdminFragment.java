@@ -21,6 +21,8 @@ public class LoginAdminFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
     private Interfaz mInterfaz;
+    private String message;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,8 @@ public class LoginAdminFragment extends Fragment {
             }).addOnFailureListener(new OnFailureListener(){
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "error de conexion", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje13);
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         }

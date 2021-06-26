@@ -16,7 +16,7 @@
         android:paddingTop="5dp"
         android:textColor="@color/color_secundario"
         android:paddingBottom="10dp"
-        android:text="Detalle Persona"
+        android:text="Detalle Plato"
         android:textSize="24sp"
         android:textStyle="bold">
 

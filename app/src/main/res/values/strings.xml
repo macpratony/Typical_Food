@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">Typical Food</string>
 
@@ -29,6 +30,50 @@
     <string name="seleccion_provincia">SELECCIONE UNA PROVINCIA</string>
     <string name="ingrese_correo">Ingrese correo electrónico</string>
     <string name="typical_food">Typical Food</string>
+    <string name="favoritos">FAVORITOS</string>
+    <string name="nombre_usuario">USUARIO</string>
+
+    <!-- MENSAJES APP-->
+    <string name="mensaje_fav">NO TIENES NINGUN PLATO</string>
+    <string name="mensaje_fav2">AGREGADO COMO FAVORITO...</string>
+    <string name="mensaje_email">El email introducido no existe en la base de datos ...</string>
+    <string name="mensaje_email2">Por favor ingrese un email ...</string>
+    <string name="restablecer_contrasena">Se ha enviado un correo para restablecer la contraseña, revise la bandeja de entrada...</string>
+    <string name="mensaje1">Complete todos los campos</string>
+    <string name="mensaje2">Ingrese un nombre por favor...</string>
+    <string name="mensaje3">Ingrese un email válido</string>
+    <string name="mensaje4">Ingrese una contraseña</string>
+    <string name="mensaje5">Ingrese un email y una contraseña</string>
+    <string name="mensaje6">El email introducido no es válido</string>
+    <string name="mensaje7">Las contraseñas no coinciden</string>
+    <string name="mensaje8">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="mensaje9">Usuario creado correctamente</string>
+    <string name="mensaje10">No se pudieron crear los datos correctamente</string>
+    <string name="mensaje11">Ya existe una cuenta con el correo introducido...</string>
+    <string name="mensaje12">Correo o contraseña incorrecto</string>
+    <string name="mensaje13">Error de conexión</string>
+
+    <!-- Alert Dialog -->
+    <string name="titulo">INFORMACIÓN</string>
+    <string name="mensaje_alert_dialog">Para acceder debe contar con una cuenta de administrador\n\n¿Desea iniciar sesión?</string>
+    <string name="mensaje_si">Si</string>
+    <string name="mensaje_no">No</string>
+    <string name="mensaje_admin">Acceso administrador cancelada</string>
+
+    <string name="mensaje_alert_dialog2">Para agregar platos a favoritos es necesario que inicie sesión\n\n¿Desea iniciar sesión?</string>
+    <string name="mensaje_favorito">No se ha podido añadir el plato a favorito</string>
+
+    <!-- Administrador -->
+    <string name="admin1">Todos los campos son obligatorios para enviar un plato a la base de datos...</string>
+    <string name="admin2">Plato añadido con éxito</string>
+    <string name="admin3">No existe o no coincide el nombre de la provincia con la de la base de datos</string>
+    <string name="admin4">Error al cargar la foto...</string>
+    <string name="admin5">BIENVENIDO</string>
+    <string name="admin6">AÑADIR PLATO TÍPICO</string>
+
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

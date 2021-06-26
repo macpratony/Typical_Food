@@ -54,6 +54,8 @@ public class AgregarPlatosAdminFragment extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private ProgressBar mProgressBar;
 
+    private String message;
+
     private Uri keyImage;
     private static final int GALLERY_INTENT = 1;
 
@@ -120,7 +122,8 @@ public class AgregarPlatosAdminFragment extends Fragment {
                 map.put("foto", String.valueOf(keyImage));
 
                 if(nombreProvincia.equals("") || nombrePlato.equals("") || descrip.equals("") || keyImage == null){
-                    Snackbar.make(getView(), "Todos los campos son obligatorios para enviar un plato a la base de datos...", Snackbar.LENGTH_LONG).show();
+                    message = getString(R.string.admin1);
+                    Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
                 }else{
                     viewModel.getDocumentList().observe(getViewLifecycleOwner(), new Observer<List<DocumentSnapshot>>() {
                         @Override
@@ -140,10 +143,11 @@ public class AgregarPlatosAdminFragment extends Fragment {
                                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.home_content, admin);
                                 fragmentTransaction.commit();
-
-                                Snackbar.make(getView(), "Plato añadido con éxito", Snackbar.LENGTH_LONG).show();
+                                message = getString(R.string.admin2);
+                                Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
                             }else{
-                                Snackbar.make(getView(), "No existe o no coincide el nombre de la provincia con la de la base de datos", Snackbar.LENGTH_LONG).show();
+                                message = getString(R.string.admin3);
+                                Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -207,7 +211,8 @@ public class AgregarPlatosAdminFragment extends Fragment {
 
 
         }else{
-            Snackbar.make(getView(), "Error al cargar la foto...", Snackbar.LENGTH_LONG).show();
+            message = getString(R.string.admin4);
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
         }
     }
 

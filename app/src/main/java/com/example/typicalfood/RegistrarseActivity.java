@@ -42,6 +42,7 @@ public class RegistrarseActivity extends AppCompatActivity {
     private EditText ediTextConfirmarContrasena;
     private Button btnCrearCuenta;
     private Button btnAtras;
+    private String message;
 
     //VARIABLES DE DATOS QUE SE VAN A REGISTRAR Y GUARDAR EN LA BASE DE DATOS
     private String nombre = "";
@@ -60,13 +61,13 @@ public class RegistrarseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrarse);
 
-        ediTextNombre = (EditText) findViewById(R.id.nombre);
-        ediTextEmail = (EditText) findViewById(R.id.email);
-        ediTextContrasena = (EditText) findViewById(R.id.contrasena);
-        ediTextConfirmarContrasena = (EditText) findViewById(R.id.confirmarContrasena);
+        ediTextNombre = findViewById(R.id.nombre);
+        ediTextEmail = findViewById(R.id.email);
+        ediTextContrasena = findViewById(R.id.contrasena);
+        ediTextConfirmarContrasena = findViewById(R.id.confirmarContrasena);
 
-        btnCrearCuenta = (Button) findViewById(R.id.btnCrearCuenta);
-        btnAtras = (Button)findViewById(R.id.btnCancelar);
+        btnCrearCuenta = findViewById(R.id.btnCrearCuenta);
+        btnAtras = findViewById(R.id.btnCancelar);
 
         initialize();
         btnCreateAccount();
@@ -96,15 +97,20 @@ public class RegistrarseActivity extends AppCompatActivity {
                 confirmarContrasena = ediTextConfirmarContrasena.getText().toString();
 
                 if(nombre.isEmpty() && email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(RegistrarseActivity.this, "Debe completar los campos", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje1);
+                    Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(nombre.isEmpty() && !email.isEmpty() && !password.isEmpty()){
-                    Toast.makeText(RegistrarseActivity.this, "Debe de ingresar un nombre", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje2);
+                    Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(!nombre.isEmpty() && email.isEmpty() && !password.isEmpty()){
-                    Toast.makeText(RegistrarseActivity.this, "Ingrese un email válido", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje3);
+                    Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(!nombre.isEmpty() && !email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(RegistrarseActivity.this, "Ingrese una contraseña", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje4);
+                    Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(!nombre.isEmpty() && email.isEmpty() && password.isEmpty()){
-                    Toast.makeText(RegistrarseActivity.this, "Ingrese un email y una contraseña", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje5);
+                    Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                 }else if(!nombre.isEmpty() && !email.isEmpty() && !password.isEmpty()){
                     if(password.length() >= 6){
                         if(password.equals(confirmarContrasena)){
@@ -112,13 +118,16 @@ public class RegistrarseActivity extends AppCompatActivity {
                             if (mather.find() == true) {
                                 registerUserCloudFirestore();
                             } else {
-                                Toast.makeText(RegistrarseActivity.this, "El email introducido no es válido", Toast.LENGTH_SHORT).show();
+                                message = getString(R.string.mensaje6);
+                                Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }else {
-                            Toast.makeText(RegistrarseActivity.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                            message = getString(R.string.mensaje7);
+                            Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(RegistrarseActivity.this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+                        message = getString(R.string.mensaje8);
+                        Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -155,7 +164,8 @@ public class RegistrarseActivity extends AppCompatActivity {
                     mFirestore.collection("Users").document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(RegistrarseActivity.this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
+                            message = getString(R.string.mensaje9);
+                            Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(RegistrarseActivity.this, NavigationDrawerActivity.class);
                             startActivity(i);
                             finish();
@@ -164,12 +174,14 @@ public class RegistrarseActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(RegistrarseActivity.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
+                            message = getString(R.string.mensaje10);
+                            Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
                     });
 
                 }else{
-                    Toast.makeText(RegistrarseActivity.this, "Ya existe una cuenta con el correo introducido...", Toast.LENGTH_SHORT).show();
+                    message = getString(R.string.mensaje11);
+                    Toast.makeText(RegistrarseActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             }
         });

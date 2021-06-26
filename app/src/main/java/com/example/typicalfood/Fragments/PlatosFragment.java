@@ -69,31 +69,28 @@ public class PlatosFragment extends Fragment {
     }
 
     public void mostrarDatos() throws InterruptedException {
+        mProgressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
             Bundle city = getArguments();
             if(city != null){
                 listaPlatos = (ArrayList<Platos>) city.getSerializable("city");
                 provincia = (String) city.getSerializable("provincia");
 
             title.setText(provincia);
-                mProgressBar.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
             adapterPlatos = new AdapterPlatos(getContext(), R.layout.item_platos_provincia, listaPlatos);
             recyclerView.setAdapter(adapterPlatos);
-                mProgressBar.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-
 
             //Titulo que se añade en el fragment del listado de platos de la ciudad que se pulsa
-
 
             adapterPlatos.setOnclickListener(view -> {
                 mInterfaz.enviarPlatos(listaPlatos.get(recyclerView.getChildAdapterPosition(view)), provincia);
 
             });
         }
+        mProgressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
 
     }
 

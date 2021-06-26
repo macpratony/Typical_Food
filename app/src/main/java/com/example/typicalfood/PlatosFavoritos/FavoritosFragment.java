@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,13 +53,16 @@ public class FavoritosFragment extends Fragment {
 
     private AdapterFavorito adapter;
     private RecyclerView recyclerView;
-    private List<FavoritosPlatos> platosList = new ArrayList<>();
+    private List<FavoritosPlatos> platosList;
     private List<FavoritosPlatos> listPlate = new ArrayList<>();
     private Interfaz mInterfaz;
     private Activity actividad;
     private TextView txtMensaje;
+    private TextView txtMensaje2;
+
 
     protected ViewModelFavorites viewModel;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,21 +70,24 @@ public class FavoritosFragment extends Fragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
             recyclerView = view.findViewById(R.id.recicleFav);
             txtMensaje = view.findViewById(R.id.txtMensajeFavorito);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            txtMensaje2 = view.findViewById(R.id.txtMensajeFavorito2);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        progressBar = view.findViewById(R.id.progressBarFavorito);
+        progressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
 
             mAuth = FirebaseAuth.getInstance();
             mFirestore = FirebaseFirestore.getInstance();
-            if(mAuth.getCurrentUser() != null){
+            if(mAuth.getCurrentUser() != null) {
                 viewModel = new ViewModelProvider(this).get(ViewModelFavorites.class);
             }
-
-
 
         return view;
     }
@@ -87,18 +95,31 @@ public class FavoritosFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+         progressBar.setVisibility(View.VISIBLE);
+         recyclerView.setVisibility(View.GONE);
+        txtMensaje.setVisibility(View.GONE);
+        txtMensaje2.setVisibility(View.GONE);
+
         if(mAuth.getCurrentUser() != null){
             viewModel.getFavPlatos().observe(getViewLifecycleOwner(), new Observer<List<FavoritosPlatos>>() {
                 @Override
                 public void onChanged(List<FavoritosPlatos> favoritosPlatosList) {
-
+                    platosList = new ArrayList<>();
                     platosList = favoritosPlatosList;
+
                     if(platosList.size() == 0){
-                        txtMensaje.setVisibility(View.VISIBLE);
+
                         recyclerView.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+                        txtMensaje.setVisibility(View.VISIBLE);
+                        txtMensaje2.setVisibility(View.VISIBLE);
+
                     }else{
+                        progressBar.setVisibility(View.GONE);
                         txtMensaje.setVisibility(View.GONE);
+                        txtMensaje2.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
+
                         adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
                         recyclerView.setAdapter(adapter);
 
@@ -116,7 +137,6 @@ public class FavoritosFragment extends Fragment {
             adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
             recyclerView.setAdapter(adapter);
         }
-
     }
 
     @Override

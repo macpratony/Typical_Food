@@ -24,4 +24,6 @@
     <color name="color_listado_provincia">#00C4CC</color>
     <color name="color_item_provincia">#DE1393</color>
     <color name="primary" >#9a28a1</color>
+    <color name="color_letra" >#1E890C</color>
+
 </resources>

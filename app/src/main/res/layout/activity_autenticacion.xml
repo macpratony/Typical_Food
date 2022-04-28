@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_fondo2"
-    tools:context=".AutenticacionActivity">
+    tools:context=".RegistrarseActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/comidavariada"
+        android:scaleType="centerCrop"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#D8000000"
+            android:gravity="center"
             android:orientation="vertical">
 
 
@@ -27,21 +29,16 @@
                 android:id="@+id/imageView"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
+                android:layout_marginTop="60dp"
                 android:src="@drawable/logo_app"
                 app:civ_border_color="@color/color_primario"
-                app:civ_border_width="3dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.227" />
+                app:civ_border_width="3dp" />
 
             <EditText
                 android:id="@+id/emailEditext"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="110dp"
                 android:ems="10"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
@@ -54,7 +51,7 @@
                 android:id="@+id/contrasenaEditext"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="50dp"
                 android:ems="10"
                 android:hint="@string/hint_contrasena"
                 android:inputType="textPassword"
@@ -67,9 +64,10 @@
                 android:id="@+id/btnAcceder"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="72dp"
+                android:layout_marginTop="110dp"
                 android:backgroundTint="@color/color_secundario"
                 android:text="@string/boton_acceder"
+                android:background="@drawable/btn_boton_inicar"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.504"
@@ -80,8 +78,10 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/color_primario"
                 android:text="@string/boton_cancelar"
+                android:background="@drawable/btn_boton_inicar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnAcceder" />
@@ -102,14 +102,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/olvido_contrasena"
                 android:textAlignment="center"
-                android:textColor="@color/purple_500"
+                android:textColor="@color/color_letra"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnCancel" />
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

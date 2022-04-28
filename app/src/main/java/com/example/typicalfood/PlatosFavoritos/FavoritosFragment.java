@@ -134,6 +134,10 @@ public class FavoritosFragment extends Fragment {
             });
 
         }else{
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            txtMensaje.setVisibility(View.VISIBLE);
+            txtMensaje2.setVisibility(View.VISIBLE);
             adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
             recyclerView.setAdapter(adapter);
         }

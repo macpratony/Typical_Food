@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +23,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ResetPasswordActivity extends AppCompatActivity {
@@ -40,6 +44,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private ViewModelFavorites viewModel;
     private List<DocumentSnapshot> listUsers;
+    private Pattern pattern;
+    private Matcher mather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mButtonResetPassword = findViewById(R.id.btnResetPassword);
         mTextViewRespuesta = findViewById(R.id.mensaje);
         mButtonReturn = findViewById(R.id.btnReturn);
+        // Patrón para validar el email
+        pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         btnReset();
         btnReturn();
@@ -101,16 +111,23 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             }
                         }
                         if(!email.isEmpty()){
-                            if(listEmail.contains(email)){
-                                mProgressBar.setVisibility(View.VISIBLE);
-                                mResetPassword.setVisibility(View.GONE);
-                                mButtonResetPassword.setVisibility(View.GONE);
-                                mTextViewRespuesta.setVisibility(View.GONE);
-                                mButtonReturn.setVisibility(View.GONE);
-                                ressetPassword();
-                            }else{
-                                massage = getString(R.string.mensaje_email);
+                            mather = pattern.matcher(email);
+                            if (mather.find() == true) {
+                                if(listEmail.contains(email)){
+                                    mProgressBar.setVisibility(View.VISIBLE);
+                                    mResetPassword.setVisibility(View.GONE);
+                                    mButtonResetPassword.setVisibility(View.GONE);
+                                    mTextViewRespuesta.setVisibility(View.GONE);
+                                    mButtonReturn.setVisibility(View.GONE);
+                                    ressetPassword();
+                                }else{
+                                    massage = getString(R.string.mensaje_email);
+                                    mTextViewRespuesta.setText(massage);
+                                }
+                            } else {
+                                massage = getString(R.string.mensaje6);
                                 mTextViewRespuesta.setText(massage);
+                               // Toast.makeText(ResetPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }else{
                             massage = getString(R.string.mensaje_email2);
@@ -121,24 +138,30 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void ressetPassword(){
-        mAuth.setLanguageCode("es");
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    mProgressBar.setVisibility(View.GONE);
-                    mTextViewRespuesta.setText("");
-                    mResetPassword.setVisibility(View.VISIBLE);
-                    mButtonResetPassword.setVisibility(View.VISIBLE);
-                    mButtonReturn.setVisibility(View.VISIBLE);
-                    Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
-                    startActivity(i);
-                    finish();
-                    massage = getString(R.string.restablecer_contrasena);
-                    Toast.makeText(ResetPasswordActivity.this, massage, Toast.LENGTH_SHORT).show();
+        String idioma = Locale.getDefault().getLanguage();
+
+        if (idioma.equals("en")){
+            mAuth.setLanguageCode("en");
+        }else{
+            mAuth.setLanguageCode("es");
+        }
+            mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        mProgressBar.setVisibility(View.GONE);
+                        mTextViewRespuesta.setText("");
+                        mResetPassword.setVisibility(View.VISIBLE);
+                        mButtonResetPassword.setVisibility(View.VISIBLE);
+                        mButtonReturn.setVisibility(View.VISIBLE);
+                        Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
+                        startActivity(i);
+                        finish();
+                        massage = getString(R.string.restablecer_contrasena);
+                        Toast.makeText(ResetPasswordActivity.this, massage, Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
     }
 
 }

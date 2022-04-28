@@ -1,74 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_fondo2"
     tools:context=".ScreenMainActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="321dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="64dp"
-        android:fontFamily="@font/finserifdisplay_italic"
-        android:text="@string/typical_food"
-        android:textAlignment="center"
-        android:textColor="@color/color_primario"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
-        android:layout_width="235dp"
-        android:layout_height="246dp"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/logo_app"
-        app:civ_border_color="@color/color_primario"
-        app:civ_border_width="3dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <Button
-        android:id="@+id/btnYaTengoCuenta"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/color_secundario"
-        android:text="@string/boton_ya_tengo_cuenta"
-        android:textColor="@color/white"
-        android:textColorHighlight="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrarse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnRegistrarse"
+        android:layout_height="match_parent"
+        android:src="@drawable/fondoappimagen"
+        android:scaleType="centerCrop"/>
+    
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/color_primario"
-        android:text="@string/boton_registrar"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/btnInicio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#D8000000"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/btnInicio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/primary"
-        android:text="@string/boton_inicio"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="321dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/finserifdisplay_italic"
+            android:text="@string/typical_food"
+            android:textAlignment="center"
+            android:textColor="#328CC1"
+            android:textSize="40sp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="235dp"
+            android:layout_height="246dp"
+            android:layout_marginBottom="120dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/logo_app"
+            app:civ_border_color="@color/color_primario"
+            app:civ_border_width="3dp"/>
+
+        <Button
+            android:id="@+id/btnYaTengoCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_boton_inicar"
+            android:text="@string/boton_ya_tengo_cuenta"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnRegistrarse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_registrarse"
+            android:text="@string/boton_registrar"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/btn_inicio"
+            android:text="@string/boton_inicio"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

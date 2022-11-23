@@ -11,6 +11,7 @@ public interface Interfaz {
     public void enviarPlatosFavoritos(FavoritosPlatos platos);
     public void regresar();
 
+
     public void accesAdministrator(String nombre, String correo);
     public void agregarPlatos();
 

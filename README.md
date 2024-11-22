@@ -1,3 +1,11 @@
-# Typical_Food
+# Typical Food
 
-Aplicación para despositivos moviles android, que muestra los platos típicos de cada provincia de España. Para el desarrollo de esta aplicacion se utilizó: Java, Android Studio y Firebase
+Aplicación desarrollada para dispositivos móviles con sistema operativo android, que muestra sugerencias de platos típicos de cada provincia de España.
+
+
+# Recursos Utilizados
+
+Para el desarrollo de la aplicación se están utilizando los siguientes recursos:
+- **Java.**
+- **Android Studio**
+- **Firebase**

@@ -90,7 +90,7 @@ public class AdministradorFragment extends Fragment {
     public void animationLottie(LottieAnimationView lottie, int tiempoEspera){
         lottie.playAnimation();
         lottie.setSpeed(1.5f);
-        new Handler(Looper.myLooper()).postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 mInterfaz.agregarPlatos();

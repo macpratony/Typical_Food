@@ -98,38 +98,20 @@ public class AutenticacionActivity extends AppCompatActivity {
 
     //METODO QUE VERIFICA EL ACCESO MEDIANTE USUARIO Y CONTRASEÑA
     public void loginUser(){
-        if(email.equals("marcoaph29@gmail.com") && password.equals("Administrador")){
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Intent i = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
-                                startActivity(i);
-                                finish();
-                            } else {
-                                message = getString(R.string.mensaje12);
-                                mTextViewRespuesta.setText(message);
-                            }
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent i = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            message = getString(R.string.mensaje12);
+                            mTextViewRespuesta.setText(message);
                         }
-                    });
-
-        }else {
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Intent i = new Intent(getApplicationContext(), NavigationDrawerActivity.class);
-                                startActivity(i);
-                                finish();
-                            } else {
-                                message = getString(R.string.mensaje12);
-                                mTextViewRespuesta.setText(message);
-                            }
-                        }
-                    });
-        }
+                    }
+                });
     }
 
 }

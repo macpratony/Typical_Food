@@ -289,7 +289,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                                                     titulo = valor;
                                                 }
                                             }
-                                            if(titulo != "" && foto != "" && descripcion != ""){
+                                            if(!titulo.isEmpty() && !foto.isEmpty() && !descripcion.isEmpty()){
                                                 platosList.add(new Platos(titulo,foto, descripcion));
                                             }
 

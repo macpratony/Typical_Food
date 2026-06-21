@@ -1,5 +1,6 @@
 package com.example.typicalfood.Administrador;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -182,7 +183,7 @@ public class AgregarPlatosAdminFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_INTENT){
+        if(requestCode == GALLERY_INTENT && resultCode == Activity.RESULT_OK && data != null && data.getData() != null){
             Uri uri = data.getData();
             StorageReference filePath = mStorage.child("Fotos");
             final StorageReference fileName = filePath.child("file"+uri.getLastPathSegment());

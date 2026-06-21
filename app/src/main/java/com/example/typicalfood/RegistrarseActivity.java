@@ -115,7 +115,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                     if(password.length() >= 6){
                         if(password.equals(confirmarContrasena)){
                             mather = pattern.matcher(email);
-                            if (mather.find() == true) {
+                            if (mather.find()) {
                                 registerUserCloudFirestore();
                             } else {
                                 message = getString(R.string.mensaje6);

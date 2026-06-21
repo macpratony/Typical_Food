@@ -112,7 +112,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         }
                         if(!email.isEmpty()){
                             mather = pattern.matcher(email);
-                            if (mather.find() == true) {
+                            if (mather.find()) {
                                 if(listEmail.contains(email)){
                                     mProgressBar.setVisibility(View.VISIBLE);
                                     mResetPassword.setVisibility(View.GONE);

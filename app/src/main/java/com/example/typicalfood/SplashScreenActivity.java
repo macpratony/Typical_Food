@@ -31,7 +31,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         logoImageView.setAnimation(animacion1);
         textSplash.setAnimation(animacion1);
 
-        new Handler(Looper.myLooper()).postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 startActivity(new Intent(SplashScreenActivity.this, NavigationDrawerActivity.class));

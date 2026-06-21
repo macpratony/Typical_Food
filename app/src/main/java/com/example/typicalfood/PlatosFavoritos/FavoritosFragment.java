@@ -138,7 +138,7 @@ public class FavoritosFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             txtMensaje.setVisibility(View.VISIBLE);
             txtMensaje2.setVisibility(View.VISIBLE);
-            adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
+            adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, new ArrayList<FavoritosPlatos>());
             recyclerView.setAdapter(adapter);
         }
     }

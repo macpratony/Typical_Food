@@ -364,10 +364,10 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     if(documentSnapshot.exists()){
                         String nombre = documentSnapshot.getString("name");
                         String correo = documentSnapshot.getString("email");
-                        if(nombre.equals("Marco") && correo.equals("marcoaph29@gmail.com")){
+                        String rol = documentSnapshot.getString("rol");
+                        if("admin".equals(rol)){
                             fragmentManager.beginTransaction().replace(R.id.home_content, new AdministradorFragment()).commit();
                         }else{
-                            //Si no existe usuario registrado sale una ventana de alerta
                             alertDialogAdmin();
                         }
 
@@ -389,15 +389,14 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
     @Override
-    public void accesAdministrator(String nombre, String correo) {
+    public void accesAdministrator(String nombre, String correo, String rol) {
          AdministradorFragment admin = new AdministradorFragment();
 
-        if(nombre.equals("Marco") && correo.equals("marcoaph29@gmail.com")){
+        if("admin".equals(rol)){
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.home_content, admin);
             fragmentTransaction.commit();
         }else{
-            //Si no existe usuario registrado sale una ventana de alerta
             alertDialogAdmin();
         }
     }

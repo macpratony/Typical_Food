@@ -56,7 +56,8 @@ public class LoginAdminFragment extends Fragment {
                     if(documentSnapshot.exists()){
                         String nombre = documentSnapshot.getString("name");
                         String correo = documentSnapshot.getString("email");
-                        mInterfaz.accesAdministrator(nombre,correo);
+                        String rol = documentSnapshot.getString("rol");
+                        mInterfaz.accesAdministrator(nombre, correo, rol);
                     }
                 }
             }).addOnFailureListener(new OnFailureListener(){

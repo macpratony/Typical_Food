@@ -1,26 +1,21 @@
 package com.example.typicalfood.Administrador;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.example.typicalfood.Interface.Interfaz;
+import com.example.typicalfood.Base.BaseInterfazFragment;
 import com.example.typicalfood.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.typicalfood.Utils.FirebaseUserHelper;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class LoginAdminFragment extends Fragment {
+public class LoginAdminFragment extends BaseInterfazFragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
-    private Interfaz mInterfaz;
     private String message;
 
 
@@ -49,24 +44,18 @@ public class LoginAdminFragment extends Fragment {
 
     public void comprobateUser(){
         if(mAuth.getCurrentUser() != null){
-            String id = mAuth.getCurrentUser().getUid();
-            mFirestore.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            FirebaseUserHelper.fetchCurrentUserInfo(mAuth, mFirestore, new FirebaseUserHelper.UserInfoCallback() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        String nombre = documentSnapshot.getString("name");
-                        String correo = documentSnapshot.getString("email");
-                        mInterfaz.accesAdministrator(nombre,correo);
-                    }
+                public void onUserLoaded(String name, String email) {
+                    mInterfaz.accesAdministrator(name, email);
                 }
-            }).addOnFailureListener(new OnFailureListener(){
+
                 @Override
-                public void onFailure(@NonNull Exception e) {
+                public void onError(Exception e) {
                     message = getString(R.string.mensaje13);
                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
-
 }

@@ -1,52 +1,35 @@
 package com.example.typicalfood.PlatosFavoritos;
 
-import android.app.Activity;
-import android.content.Context;
-
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.typicalfood.Adapter.AdapterFavorito;
+import com.example.typicalfood.Base.BaseInterfazFragment;
 import com.example.typicalfood.Entity.FavoritosPlatos;
-import com.example.typicalfood.Interface.Interfaz;
 
-import com.example.typicalfood.Pojo.UserPojo;
 import com.example.typicalfood.R;
 
+import com.example.typicalfood.Utils.UIUtils;
 import com.example.typicalfood.ViewModel.ViewModelFavorites;
-import com.google.android.gms.tasks.OnSuccessListener;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.util.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
-public class FavoritosFragment extends Fragment {
+public class FavoritosFragment extends BaseInterfazFragment {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
@@ -55,8 +38,6 @@ public class FavoritosFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<FavoritosPlatos> platosList;
     private List<FavoritosPlatos> listPlate = new ArrayList<>();
-    private Interfaz mInterfaz;
-    private Activity actividad;
     private TextView txtMensaje;
     private TextView txtMensaje2;
 
@@ -81,7 +62,7 @@ public class FavoritosFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         progressBar = view.findViewById(R.id.progressBarFavorito);
-        progressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        UIUtils.styleProgressBar(progressBar);
 
             mAuth = FirebaseAuth.getInstance();
             mFirestore = FirebaseFirestore.getInstance();
@@ -141,23 +122,5 @@ public class FavoritosFragment extends Fragment {
             adapter = new AdapterFavorito(getContext(), R.layout.item_platos_provincia, (ArrayList<FavoritosPlatos>) platosList);
             recyclerView.setAdapter(adapter);
         }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            this.actividad = (Activity)context;
-            mInterfaz = (Interfaz) this.actividad;
-        } else {
-            throw new RuntimeException();
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

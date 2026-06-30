@@ -21,12 +21,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import com.example.typicalfood.Utils.UIUtils;
+import com.example.typicalfood.Utils.ValidationUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class ResetPasswordActivity extends AppCompatActivity {
@@ -44,8 +45,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private ViewModelFavorites viewModel;
     private List<DocumentSnapshot> listUsers;
-    private Pattern pattern;
-    private Matcher mather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +55,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(ViewModelFavorites.class);
 
         mProgressBar = findViewById(R.id.progressBar);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        UIUtils.styleProgressBar(mProgressBar);
         mResetPassword = findViewById(R.id.editextRecuperarContrasena);
         mButtonResetPassword = findViewById(R.id.btnResetPassword);
         mTextViewRespuesta = findViewById(R.id.mensaje);
         mButtonReturn = findViewById(R.id.btnReturn);
-        // Patrón para validar el email
-        pattern = Pattern
-                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-
         btnReset();
         btnReturn();
 
@@ -111,8 +105,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             }
                         }
                         if(!email.isEmpty()){
-                            mather = pattern.matcher(email);
-                            if (mather.find() == true) {
+                            if (ValidationUtils.isValidEmail(email)) {
                                 if(listEmail.contains(email)){
                                     mProgressBar.setVisibility(View.VISIBLE);
                                     mResetPassword.setVisibility(View.GONE);

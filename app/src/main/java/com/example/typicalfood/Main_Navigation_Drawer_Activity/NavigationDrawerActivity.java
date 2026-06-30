@@ -39,6 +39,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.example.typicalfood.Utils.FirebaseUserHelper;
+import com.example.typicalfood.Utils.UIUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -137,28 +139,19 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
     }
 
     public void getUserInfo(){
-        if(mAuth.getCurrentUser() != null){
-            String id = mAuth.getCurrentUser().getUid();
-            mFirestore.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        String nombre = documentSnapshot.getString("name");
-                        String correo = documentSnapshot.getString("email");
-                        nameUsuario.setText(nombre);
-                        emailUsuario.setText(correo);
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener(){
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    message = getString(R.string.mensaje13);
-                    Toast.makeText(NavigationDrawerActivity.this, message, Toast.LENGTH_SHORT).show();
-                }
-            });
+        FirebaseUserHelper.fetchCurrentUserInfo(mAuth, mFirestore, new FirebaseUserHelper.UserInfoCallback() {
+            @Override
+            public void onUserLoaded(String name, String email) {
+                nameUsuario.setText(name);
+                emailUsuario.setText(email);
+            }
 
-        }
-
+            @Override
+            public void onError(Exception e) {
+                message = getString(R.string.mensaje13);
+                Toast.makeText(NavigationDrawerActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //Este metodo hace que si está el menu desplegado al darle a la tecla atras se oculte el menú
@@ -357,25 +350,18 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if(mAuth.getCurrentUser() != null){
-            String id = mAuth.getCurrentUser().getUid();
-            mFirestore.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            FirebaseUserHelper.fetchCurrentUserInfo(mAuth, mFirestore, new FirebaseUserHelper.UserInfoCallback() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        String nombre = documentSnapshot.getString("name");
-                        String correo = documentSnapshot.getString("email");
-                        if(nombre.equals("Marco") && correo.equals("marcoaph29@gmail.com")){
-                            fragmentManager.beginTransaction().replace(R.id.home_content, new AdministradorFragment()).commit();
-                        }else{
-                            //Si no existe usuario registrado sale una ventana de alerta
-                            alertDialogAdmin();
-                        }
-
+                public void onUserLoaded(String name, String email) {
+                    if(name.equals("Marco") && email.equals("marcoaph29@gmail.com")){
+                        fragmentManager.beginTransaction().replace(R.id.home_content, new AdministradorFragment()).commit();
+                    }else{
+                        alertDialogAdmin();
                     }
                 }
-            }).addOnFailureListener(new OnFailureListener(){
+
                 @Override
-                public void onFailure(@NonNull Exception e) {
+                public void onError(Exception e) {
                     message = getString(R.string.mensaje13);
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
@@ -412,25 +398,20 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
 
     }
 
-    //Metodo que avisa al usuario que si desea entrar al item de administrador debe contar con una cuenta admin
     public void alertDialogAdmin(){
-        //Si no existe usuario registrado sale una ventana de alerta
-        AlertDialog.Builder alerta = new AlertDialog.Builder(NavigationDrawerActivity.this);
-        message = getString(R.string.titulo);
-        message1 = getString(R.string.mensaje_alert_dialog);
-        message2 = getString(R.string.mensaje_si);
-        message3 = getString(R.string.mensaje_no);
-
-        alerta.setTitle(message)
-                .setMessage(message1)
-                .setPositiveButton(message2, new DialogInterface.OnClickListener() {
+        UIUtils.showAlertDialog(NavigationDrawerActivity.this,
+                getString(R.string.titulo),
+                getString(R.string.mensaje_alert_dialog),
+                getString(R.string.mensaje_si),
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(getApplicationContext(), AutenticacionActivity.class);
                          startActivity(i);
                     }
-                })
-                .setNegativeButton(message3, new DialogInterface.OnClickListener() {
+                },
+                getString(R.string.mensaje_no),
+                new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -438,7 +419,6 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 });
-        alerta.show();
     }
 
 }

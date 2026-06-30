@@ -1,10 +1,6 @@
 package com.example.typicalfood.Administrador;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -13,26 +9,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
-import com.example.typicalfood.Interface.Interfaz;
+import com.example.typicalfood.Base.BaseInterfazFragment;
 import com.example.typicalfood.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.typicalfood.Utils.FirebaseUserHelper;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AdministradorFragment extends Fragment {
+public class AdministradorFragment extends BaseInterfazFragment {
     private TextView welcomeUser;
     private LottieAnimationView lottieAnimationView;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
-    private Interfaz mInterfaz;
 
     private String message;
 
     public static int MILISEGUNDOS_ESPERA = 1500;
-    private Activity actividad;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,27 +56,19 @@ public class AdministradorFragment extends Fragment {
     }
 
     public void getDataUser(){
-        if(mAuth.getCurrentUser() != null){
-            String id = mAuth.getCurrentUser().getUid();
-            mFirestore.collection("Users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        String nombre = documentSnapshot.getString("name");
-                        message = getString(R.string.admin5);
-                        welcomeUser.setText(message+" "+nombre);
+        FirebaseUserHelper.fetchCurrentUserInfo(mAuth, mFirestore, new FirebaseUserHelper.UserInfoCallback() {
+            @Override
+            public void onUserLoaded(String name, String email) {
+                message = getString(R.string.admin5);
+                welcomeUser.setText(message + " " + name);
+            }
 
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener(){
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    message = getString(R.string.mensaje13);
-                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
+            @Override
+            public void onError(Exception e) {
+                message = getString(R.string.mensaje13);
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void animationLottie(LottieAnimationView lottie, int tiempoEspera){
@@ -98,24 +82,4 @@ public class AdministradorFragment extends Fragment {
         },tiempoEspera);
 
     }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            this.actividad = (Activity)context;
-            mInterfaz = (Interfaz) this.actividad;
-        } else {
-            throw new RuntimeException();
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-
 }

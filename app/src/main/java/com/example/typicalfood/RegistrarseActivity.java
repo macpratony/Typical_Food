@@ -22,12 +22,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.example.typicalfood.Utils.ValidationUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegistrarseActivity extends AppCompatActivity {
 
@@ -49,9 +49,6 @@ public class RegistrarseActivity extends AppCompatActivity {
     private String email = "";
     private String password = "";
     private String confirmarContrasena = "";
-
-    private Pattern pattern;
-    private Matcher mather;
 
     private List<DocumentReference> listReference = new ArrayList<>();
 
@@ -81,10 +78,7 @@ public class RegistrarseActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirestore = FirebaseFirestore.getInstance();
 
-        // Patrón para validar el email
-       pattern = Pattern
-                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
     }
 
     public void btnCreateAccount(){
@@ -114,8 +108,7 @@ public class RegistrarseActivity extends AppCompatActivity {
                 }else if(!nombre.isEmpty() && !email.isEmpty() && !password.isEmpty()){
                     if(password.length() >= 6){
                         if(password.equals(confirmarContrasena)){
-                            mather = pattern.matcher(email);
-                            if (mather.find() == true) {
+                            if (ValidationUtils.isValidEmail(email)) {
                                 registerUserCloudFirestore();
                             } else {
                                 message = getString(R.string.mensaje6);

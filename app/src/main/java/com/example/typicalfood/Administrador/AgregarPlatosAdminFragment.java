@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.example.typicalfood.R;
+import com.example.typicalfood.Utils.UIUtils;
 import com.example.typicalfood.ViewModel.ViewModelFavorites;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,7 +78,7 @@ public class AgregarPlatosAdminFragment extends Fragment {
         enviarPlato = view.findViewById(R.id.btnSubirPlato);
         cancelarPlato = view.findViewById(R.id.btncancelarPlato);
         mProgressBar = view.findViewById(R.id.progressBarLoad);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        UIUtils.styleProgressBar(mProgressBar);
 
         initialize();
         savePlateFirebase();

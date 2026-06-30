@@ -1,22 +1,17 @@
 package com.example.typicalfood.Fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,15 +19,14 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.typicalfood.Adapter.AdapterFavorito;
+import com.example.typicalfood.Base.BaseInterfazFragment;
 import com.example.typicalfood.Entity.FavoritosPlatos;
 import com.example.typicalfood.Entity.Platos;
-import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.R;
 import com.example.typicalfood.ScreenMainActivity;
+import com.example.typicalfood.Utils.UIUtils;
 import com.example.typicalfood.ViewModel.ViewModelFavorites;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -51,15 +45,13 @@ import java.util.Map;
 
 
 @SuppressWarnings("ALL")
-public class DetallePlatoFragment extends Fragment {
+public class DetallePlatoFragment extends BaseInterfazFragment {
 
     private TextView titulo;
     private ImageView imagen;
     private TextView descripcion;
     private LottieAnimationView lottieAnimationView;
-    private DocumentReference documentRef;
     private DocumentReference documentRef2;
-    private Task<DocumentSnapshot> favorito;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
 
@@ -72,14 +64,9 @@ public class DetallePlatoFragment extends Fragment {
     private String tit;
     private List<FavoritosPlatos> platosList = new ArrayList<>();
 
-    private Interfaz mInterfaz;
-    private Activity actividad;
     private ArrayList<DocumentReference> ref = new ArrayList<DocumentReference>();
 
     private String message;
-    private String message1;
-    private String message2;
-    private String message3;
     private ProgressBar mProgressBar;
 
     private boolean isFavorite = false;
@@ -97,7 +84,7 @@ public class DetallePlatoFragment extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mProgressBar = view.findViewById(R.id.progressBarDetalle);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        UIUtils.styleProgressBar(mProgressBar);
 
         String idioma = Locale.getDefault().getLanguage();
 
@@ -114,8 +101,6 @@ public class DetallePlatoFragment extends Fragment {
                 }else{
                     descripcion.setText(platos.getDescripcion());
                 }
-
-
 
             }else{
                 plate = (FavoritosPlatos) objetoPlato.getSerializable("objeto");
@@ -155,7 +140,6 @@ public class DetallePlatoFragment extends Fragment {
                         .build();
         final Translator spanishEnglishTranslator = Translation.getClient(options);
 
-        //Descargar el modelo de traduccion
         DownloadConditions conditions = new DownloadConditions.Builder()
                 .requireWifi()
                 .build();
@@ -170,17 +154,11 @@ public class DetallePlatoFragment extends Fragment {
                             }
                         })
                 .addOnFailureListener(
-                        new OnFailureListener() {
+                        new com.google.android.gms.tasks.OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                // Model couldn’t be downloaded or other internal error.
-                                // ...
                             }
                         });
-
-         //Translator translator = Translation.getClient(options);
-       // getLifecycle().addObserver(translator);
-
 
     }
 
@@ -198,16 +176,13 @@ public class DetallePlatoFragment extends Fragment {
                                 }
                             })
                     .addOnFailureListener(
-                            new OnFailureListener() {
+                            new com.google.android.gms.tasks.OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    // Error.
-                                    // ...
                                 }
                             });
 
         }
-
 
     }
 
@@ -218,24 +193,21 @@ public class DetallePlatoFragment extends Fragment {
             getPositionNamePlate(imageView, animation,like);
 
         }else{
-            //Si no existe usuario registrado sale una ventana de alerta
-            AlertDialog.Builder alerta = new AlertDialog.Builder(getActivity());
-            message = getString(R.string.titulo);
-            message1 = getString(R.string.mensaje_alert_dialog2);
-            message2 = getString(R.string.mensaje_si);
-            message3 = getString(R.string.mensaje_no);
+            String title = getString(R.string.titulo);
+            String msg = getString(R.string.mensaje_alert_dialog2);
+            String yes = getString(R.string.mensaje_si);
+            String no = getString(R.string.mensaje_no);
 
-
-            alerta.setTitle(message)
-                    .setMessage(message1)
-                    .setPositiveButton(message2, new DialogInterface.OnClickListener() {
+            UIUtils.showAlertDialog(getActivity(), title, msg, yes,
+                    new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent i = new Intent(getActivity(), ScreenMainActivity.class);
                             startActivity(i);
                         }
-                    })
-                    .setNegativeButton(message3, new DialogInterface.OnClickListener() {
+                    },
+                    no,
+                    new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -243,7 +215,6 @@ public class DetallePlatoFragment extends Fragment {
                             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                         }
                     });
-            alerta.show();
         }
         return !like;
     }
@@ -281,22 +252,16 @@ public class DetallePlatoFragment extends Fragment {
 
     public void favoritePlate(){
 
-
         if(isFavorite){
             lottieAnimationView.setImageResource(R.drawable.twitter_like2);
-            imagen.setVisibility(View.VISIBLE);
-            descripcion.setVisibility(View.VISIBLE);
-            lottieAnimationView.setVisibility(View.VISIBLE);
-            titulo.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
         }else{
             lottieAnimationView.setImageResource(R.drawable.twitter_like);
-            imagen.setVisibility(View.VISIBLE);
-            descripcion.setVisibility(View.VISIBLE);
-            lottieAnimationView.setVisibility(View.VISIBLE);
-            titulo.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
         }
+        imagen.setVisibility(View.VISIBLE);
+        descripcion.setVisibility(View.VISIBLE);
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        titulo.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     public void getPositionNamePlate(LottieAnimationView imageView, int animation, boolean like){
@@ -319,7 +284,7 @@ public class DetallePlatoFragment extends Fragment {
                         }
 
                         if((platos != null && titulos.contains(platos.getTitulo().toLowerCase())) || (plate != null && titulos.contains(plate.getTitulo().toLowerCase()))){
-                            documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i); //Obtiene la ruta completa del plato
+                            documentRef2 = mFirestore.document("Provincias/"+provincia+"/platos/"+i);
 
                             if(!like){
                                 mFirestore.collection("Users")
@@ -344,23 +309,5 @@ public class DetallePlatoFragment extends Fragment {
             }
         });
 
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            this.actividad = (Activity)context;
-            mInterfaz = (Interfaz) this.actividad;
-        } else {
-            throw new RuntimeException();
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

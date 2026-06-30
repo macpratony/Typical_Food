@@ -71,8 +71,14 @@
     <string name="admin5">BIENVENIDO</string>
     <string name="admin6">AÑADIR PLATO TÍPICO</string>
 
-
-
+    <!-- Error handling -->
+    <string name="error_reset_password">No se pudo enviar el correo de recuperación, inténtelo de nuevo...</string>
+    <string name="error_translation">No se pudo traducir la descripción</string>
+    <string name="error_loading_data">Error al cargar los datos</string>
+    <string name="error_loading_favorites">Error al cargar los favoritos</string>
+    <string name="error_saving_plate">Error al guardar el plato</string>
+    <string name="error_uploading_photo">Error al subir la foto</string>
+    <string name="error_toggle_favorite">Error al actualizar favorito</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

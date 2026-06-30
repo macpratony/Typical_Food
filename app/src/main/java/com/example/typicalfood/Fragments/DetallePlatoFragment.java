@@ -173,6 +173,8 @@ public class DetallePlatoFragment extends Fragment {
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                descripcion.setText(text);
+                                Log.e("DetallePlato", "Translation model download failed", e);
                                 // Model couldn’t be downloaded or other internal error.
                                 // ...
                             }
@@ -201,8 +203,8 @@ public class DetallePlatoFragment extends Fragment {
                             new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    // Error.
-                                    // ...
+                                    descripcion.setText(text);
+                                    Log.e("DetallePlato", "Translation failed", e);
                                 }
                             });
 
@@ -324,14 +326,32 @@ public class DetallePlatoFragment extends Fragment {
                             if(!like){
                                 mFirestore.collection("Users")
                                         .document(mAuth.getCurrentUser().getUid())
-                                        .update("favorites", FieldValue.arrayUnion(documentRef2));
+                                        .update("favorites", FieldValue.arrayUnion(documentRef2))
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.e("DetallePlato", "Failed to add favorite", e);
+                                                if (getContext() != null) {
+                                                    Toast.makeText(getContext(), getString(R.string.error_toggle_favorite), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                 imageView.setAnimation(animation);
                                 imageView.playAnimation();
 
                             }else {
                                 mFirestore.collection("Users")
                                         .document(mAuth.getCurrentUser().getUid())
-                                        .update("favorites", FieldValue.arrayRemove(documentRef2));
+                                        .update("favorites", FieldValue.arrayRemove(documentRef2))
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.e("DetallePlato", "Failed to remove favorite", e);
+                                                if (getContext() != null) {
+                                                    Toast.makeText(getContext(), getString(R.string.error_toggle_favorite), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                 imageView.setImageResource(R.drawable.twitter_like);
                             }
                             break;
@@ -339,7 +359,15 @@ public class DetallePlatoFragment extends Fragment {
                     }
 
                 }else{
-                    System.out.println("No existe nada en el documento");
+                    Log.w("DetallePlato", "Province document does not exist: " + provincia);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("DetallePlato", "Failed to load province data", e);
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), getString(R.string.error_toggle_favorite), Toast.LENGTH_SHORT).show();
                 }
             }
         });

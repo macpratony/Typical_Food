@@ -26,6 +26,9 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -159,7 +162,14 @@ public class AgregarPlatosAdminFragment extends Fragment {
     //Guarda en la base de datos una vez que se está seguro que existe en la base de datos
     public void savePlato(Map<String, Object> map){
         DocumentReference mReference = mFirestore.collection("Provincias").document(nombreProvincia);
-        mReference.update("platos", FieldValue.arrayUnion(map));
+        mReference.update("platos", FieldValue.arrayUnion(map))
+                .addOnFailureListener(e -> {
+                    Log.e("AgregarPlatos", "Failed to save plate", e);
+                    if (getView() != null) {
+                        message = getString(R.string.error_saving_plate);
+                        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+                    }
+                });
     }
 
     //Boton cancelar subida de plato a firebase
@@ -207,7 +217,25 @@ public class AgregarPlatosAdminFragment extends Fragment {
                     cancelarPlato.setVisibility(View.VISIBLE);
 
 
-                }));
+                }).addOnFailureListener(e -> {
+                    Log.e("AgregarPlatos", "Failed to get download URL", e);
+                    mProgressBar.setVisibility(View.GONE);
+                    enviarPlato.setVisibility(View.VISIBLE);
+                    cancelarPlato.setVisibility(View.VISIBLE);
+                    if (getView() != null) {
+                        message = getString(R.string.error_uploading_photo);
+                        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+                    }
+                })).addOnFailureListener(e -> {
+                    Log.e("AgregarPlatos", "Failed to upload photo", e);
+                    mProgressBar.setVisibility(View.GONE);
+                    enviarPlato.setVisibility(View.VISIBLE);
+                    cancelarPlato.setVisibility(View.VISIBLE);
+                    if (getView() != null) {
+                        message = getString(R.string.error_uploading_photo);
+                        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+                    }
+                });
 
 
         }else{

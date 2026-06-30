@@ -95,11 +95,16 @@ public class ViewModelFavorites extends ViewModel {
                             getPlateFavorite(null, 0);
                         }
                     } else {
-                        System.out.println("No existe favoritos");
+                        Log.w("ViewModelFavorites", "User document does not exist");
                     }
 
                 }
 
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("ViewModelFavorites", "Failed to load user favorites", e);
+                }
             });
         }
     }
@@ -121,8 +126,13 @@ public class ViewModelFavorites extends ViewModel {
                         platosList.add(new FavoritosPlatos(title,photo,description,city));
                         favPlatos.setValue(platosList);
                     }else{
-                        System.out.println("No existe nada en el documento");
+                        Log.w("ViewModelFavorites", "Province document does not exist: " + city);
                     }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("ViewModelFavorites", "Failed to load favorite plate from " + city, e);
                 }
             });
         }else{
@@ -136,6 +146,11 @@ public class ViewModelFavorites extends ViewModel {
         Task<QuerySnapshot> future = mFirestore.collection("Provincias").get();
         future.addOnSuccessListener(t->{
             documentList.setValue(t.getDocuments());
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("ViewModelFavorites", "Failed to load provinces", e);
+            }
         });
 
     }
@@ -145,6 +160,11 @@ public class ViewModelFavorites extends ViewModel {
         Task<QuerySnapshot> future = mFirestore.collection("Users").get();
         future.addOnSuccessListener(t->{
             listUser.setValue(t.getDocuments());
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("ViewModelFavorites", "Failed to load users", e);
+            }
         });
     }
 

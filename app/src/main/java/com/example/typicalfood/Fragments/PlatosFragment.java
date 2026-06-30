@@ -1,11 +1,7 @@
 package com.example.typicalfood.Fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,23 +10,23 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import com.example.typicalfood.Base.BaseInterfazFragment;
 import com.example.typicalfood.Entity.Platos;
-import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.Adapter.AdapterPlatos;
 import com.example.typicalfood.R;
+import com.example.typicalfood.Utils.UIUtils;
+
 import java.util.ArrayList;
 
 
-public class PlatosFragment extends Fragment {
+public class PlatosFragment extends BaseInterfazFragment {
 
      public RecyclerView recyclerView;
      private AdapterPlatos adapterPlatos;
-     private Interfaz mInterfaz;
      private ArrayList<Platos> listaPlatos;
     private TextView title;
     private ImageButton button;
     private String provincia;
-    private Activity actividad;
 
     public ProgressBar mProgressBar;
 
@@ -45,7 +41,7 @@ public class PlatosFragment extends Fragment {
         button = v.findViewById(R.id.buttonRegresar);
         recyclerView = v.findViewById(R.id.recyclerView);
         mProgressBar = v.findViewById(R.id.progressBar2);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(0xFFFF0000, android.graphics.PorterDuff.Mode.MULTIPLY);
+        UIUtils.styleProgressBar(mProgressBar);
         listaPlatos = new ArrayList<>();
 
         try {
@@ -98,24 +94,5 @@ public class PlatosFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            this.actividad = (Activity)context;
-            mInterfaz = (Interfaz) this.actividad;
-        } else {
-            throw new RuntimeException();
-        }
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
     }
 }

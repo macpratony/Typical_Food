@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.example.typicalfood.Base.BaseInterfazFragment;
 import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ProvinciasFragment extends Fragment {
+public class ProvinciasFragment extends BaseInterfazFragment {
 
     private ArrayList<String> lista_provincias;
     private ListView lista_list;
     private ArrayAdapter<String> adapter;
     private FirebaseFirestore db;
-    private Interfaz mInterfaz;
 
 
     @Override
@@ -59,6 +58,7 @@ public class ProvinciasFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

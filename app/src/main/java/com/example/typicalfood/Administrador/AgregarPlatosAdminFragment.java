@@ -101,7 +101,7 @@ public class AgregarPlatosAdminFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
+                intent.setType("image/*");
                 startActivityForResult(intent, GALLERY_INTENT);
             }
         });
@@ -182,7 +182,7 @@ public class AgregarPlatosAdminFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_INTENT){
+        if(requestCode == GALLERY_INTENT && data != null && data.getData() != null){
             Uri uri = data.getData();
             StorageReference filePath = mStorage.child("Fotos");
             final StorageReference fileName = filePath.child("file"+uri.getLastPathSegment());

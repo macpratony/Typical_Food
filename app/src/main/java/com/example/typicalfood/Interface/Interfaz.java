@@ -12,7 +12,7 @@ public interface Interfaz {
     public void regresar();
 
 
-    public void accesAdministrator(String nombre, String correo);
+    public void accesAdministrator(String nombre, String correo, String rol);
     public void agregarPlatos();
 
 

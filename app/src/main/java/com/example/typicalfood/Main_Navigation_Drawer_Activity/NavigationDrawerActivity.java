@@ -303,7 +303,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                                 }
                             }
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.e(TAG, "Error getting documents.", task.getException());
+                            message = getString(R.string.error_loading_data);
+                            Toast.makeText(NavigationDrawerActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

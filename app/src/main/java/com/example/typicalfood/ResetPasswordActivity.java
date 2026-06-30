@@ -159,6 +159,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         finish();
                         massage = getString(R.string.restablecer_contrasena);
                         Toast.makeText(ResetPasswordActivity.this, massage, Toast.LENGTH_SHORT).show();
+                    } else {
+                        mProgressBar.setVisibility(View.GONE);
+                        mResetPassword.setVisibility(View.VISIBLE);
+                        mButtonResetPassword.setVisibility(View.VISIBLE);
+                        mButtonReturn.setVisibility(View.VISIBLE);
+                        mTextViewRespuesta.setVisibility(View.VISIBLE);
+                        massage = getString(R.string.error_reset_password);
+                        mTextViewRespuesta.setText(massage);
+                        Log.e("ResetPassword", "sendPasswordResetEmail failed", task.getException());
                     }
                 }
             });

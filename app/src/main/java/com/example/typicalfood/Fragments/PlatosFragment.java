@@ -18,6 +18,10 @@ import com.example.typicalfood.Entity.Platos;
 import com.example.typicalfood.Interface.Interfaz;
 import com.example.typicalfood.Adapter.AdapterPlatos;
 import com.example.typicalfood.R;
+
+import android.util.Log;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 
@@ -51,7 +55,11 @@ public class PlatosFragment extends Fragment {
         try {
             mostrarDatos();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e("PlatosFragment", "Interrupted while loading data", e);
+            Thread.currentThread().interrupt();
+            if (getContext() != null) {
+                Toast.makeText(getContext(), getString(R.string.error_loading_data), Toast.LENGTH_SHORT).show();
+            }
         }
 
         btnRegresar();

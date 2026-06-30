@@ -72,12 +72,14 @@
     <string name="admin5">WELCOME</string>
     <string name="admin6">ADD TYPICAL DISH</string>
 
-
-
-
-
-
-
+    <!-- Error handling -->
+    <string name="error_reset_password">Could not send recovery email, please try again...</string>
+    <string name="error_translation">Could not translate the description</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="error_loading_favorites">Error loading favorites</string>
+    <string name="error_saving_plate">Error saving dish</string>
+    <string name="error_uploading_photo">Error uploading photo</string>
+    <string name="error_toggle_favorite">Error updating favorite</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
